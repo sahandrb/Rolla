@@ -1,4 +1,4 @@
-html {
+﻿html {
   font-size: 14px;
 }
 
@@ -28,4 +28,25 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
+}
+.animated-bg {
+    animation: softFade 12s infinite alternate;
+    background-color: rgb(235, 245, 255);
+    transition: background-color 2s ease;
+    min-height: 100vh;
+}
+
+/* انیمیشن تغییر رنگ بین سفید و آبی روشن */
+@keyframes softFade {
+    0% {
+        background-color: rgb(240, 248, 255); /* آبی خیلی روشن */
+    }
+
+    50% {
+        background-color: rgb(255, 255, 255); /* سفید */
+    }
+
+    100% {
+        background-color: rgb(230, 240, 255); /* آبی کمرنگ‌تر */
+    }
 }

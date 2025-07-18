@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>welcome to Rider home page</h1>
+
+<button type="button"
+        class="btn btn-primary rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
+        onclick="location.href='@Url.Action("Index", "Home", new { area = "" })'">
+    <i class="bi bi-house-door-fill"></i>
+    Go to Home
+</button>
+</div>
