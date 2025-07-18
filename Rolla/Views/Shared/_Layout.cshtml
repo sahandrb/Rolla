@@ -48,6 +48,47 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        const button = document.getElementById('driveBtn');
+        const container = document.getElementById('car-container');
+
+        button.addEventListener('click', () => {
+            // جلوگیری از کلیک مکرر
+            if (document.querySelector('.car')) return;
+
+            // ساخت ماشین
+            const car = document.createElement('div');
+            car.classList.add('car');
+            car.innerHTML = `
+                <svg viewBox="0 0 64 35" fill="black" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="12" width="60" height="15" rx="5" ry="5" />
+                    <circle cx="15" cy="29" r="5" fill="black" />
+                    <circle cx="49" cy="29" r="5" fill="black" />
+                    <rect x="22" y="6" width="20" height="8" rx="3" ry="3" fill="black" />
+                </svg>
+            `;
+            container.appendChild(car);
+
+            // حرکت ماشین
+            setTimeout(() => {
+                car.classList.add('move');
+
+                // تولید دود
+                const smoke = document.createElement('div');
+                smoke.classList.add('smoke');
+                smoke.style.left = '5px';
+                smoke.style.top = '65px';
+                container.appendChild(smoke);
+
+                setTimeout(() => smoke.remove(), 1000);
+            }, 100);
+
+            // ریدایرکت بعد از 2.5 ثانیه
+            setTimeout(() => {
+                window.location.href = '@Url.Action("Index", "Home", new { area = "" })';
+            }, 2500);
+        });
+    </script>
 
 </body>
 </html>

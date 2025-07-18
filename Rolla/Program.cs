@@ -1,7 +1,16 @@
+using Rolla.Models;
+using Rolla.Data;
+using Microsoft.EntityFrameworkCore;
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+//imlimenting DefaultConnection
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("RollaContext")));
 
 var app = builder.Build();
 
