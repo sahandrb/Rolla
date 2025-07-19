@@ -2,7 +2,7 @@
 {
     public class Driver
     {
-        public int Name { get; set; }
+        public String Name { get; set; }
         public int DriverId { get; set; }
         public int TypeOfCar { get; set; }
 

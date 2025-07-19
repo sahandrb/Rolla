@@ -1,12 +1,37 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1>welcome to Rider home page</h1>
 
-<button type="button"
+<h1>Rider home page</h1>
+
+
+<form class="p-4 rounded shadow-sm bg-light" style="max-width: 500px; margin: auto;">
+    <div class="mb-3 ">
+        <label for="riderNameInput" class="form-label">Rider Name</label>
+        <input type="text" class="form-control custom-input" id="riderNameInput" placeholder="Enter rider name">
+    </div>
+
+    <div class="mb-3">
+        <label for="riderIdInput" class="form-label">Rider ID</label>
+        <input type="number" class="form-control custom-input" id="riderIdInput" placeholder="Enter rider ID">
+    </div>
+
+    <div class="mb-3">
+        <label for="riderTypeInput" class="form-label">Rider Type</label>
+        <input type="number" class="form-control custom-input" id="riderTypeInput" placeholder="Enter rider type">
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Submit Rider</button>
+</form>
+
+<div class="parent">
+    <div class="div8"><button type="button"
         class="btn btn-primary rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
         onclick="location.href='@Url.Action("Index", "Home", new { area = "" })'">
     <i class="bi bi-house-door-fill"></i>
     Go to Home
 </button>
 </div>
+</div>
+
+

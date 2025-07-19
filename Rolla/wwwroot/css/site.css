@@ -183,3 +183,21 @@ body {
     grid-column-start: 4;
     grid-row-start: 5;
 }
+
+/*adding style for textboxes*/
+.custom-input {
+    background-color: transparent !important; /* پس‌زمینه شفاف و اولویت بالا */
+    box-shadow: none !important; /* حذف سایه پیش‌فرض */
+    border: 2px solid #ced4da;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+    .custom-input:focus {
+        background-color: transparent !important;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
+        border-color: #0d6efd !important;
+        outline: none !important;
+    }
