@@ -36,17 +36,9 @@ body {
     min-height: 100vh;
 }
 
-/* انیمیشن تغییر رنگ بین سفید و آبی روشن */
-@keyframes softFade {
-    0% {
-        background-color: rgb(240, 248, 255); /* آبی خیلی روشن */
-    }
-
-    50% {
-        background-color: rgb(255, 255, 255); /* سفید */
-    }
-
-    100% {
-        background-color: rgb(230, 240, 255); /* آبی کمرنگ‌تر */
-    }
+body {
+    background-image: url('/wallpaper/artistic-blurry-colorful-wallpaper-background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
