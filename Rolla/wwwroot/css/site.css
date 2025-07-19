@@ -42,3 +42,144 @@ body {
     background-repeat: no-repeat;
     background-position: center;
 }
+.parent {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 8px;
+    
+}
+
+    .parent > div {
+        padding: 16px;
+        text-align: center;
+        font-weight: bold;
+        display: flex; /* استفاده از فلکس برای مرکز‌چین کردن محتوا */
+        align-items: center; /* وسط‌چین عمودی */
+        justify-content: center;
+    }
+
+/* Row 1 */
+.div1 {
+    grid-column-start: 1;
+    grid-row-start: 1;
+}
+
+.div2 {
+    grid-column-start: 2;
+    grid-row-start: 1;
+}
+
+.div3 {
+    grid-column-start: 3;
+    grid-row-start: 1;
+}
+
+.div4 {
+    grid-column-start: 4;
+    grid-row-start: 1;
+}
+
+.div5 {
+    grid-column-start: 5;
+    grid-row-start: 1;
+}
+
+/* Row 2 */
+.div6 {
+    grid-column-start: 1;
+    grid-row-start: 2;
+}
+
+.div7 {
+    grid-column-start: 2;
+    grid-row-start: 2;
+}
+
+.div8 {
+    grid-column-start: 3;
+    grid-row-start: 2;
+}
+
+.div9 {
+    grid-column-start: 4;
+    grid-row-start: 2;
+}
+
+.div10 {
+    grid-column-start: 5;
+    grid-row-start: 2;
+}
+
+/* Row 3 */
+.div11 {
+    grid-column-start: 1;
+    grid-row-start: 3;
+}
+
+.div12 {
+    grid-column-start: 2;
+    grid-row-start: 3;
+}
+
+.div13 {
+    grid-column-start: 3;
+    grid-row-start: 3;
+}
+
+.div14 {
+    grid-column-start: 4;
+    grid-row-start: 3;
+}
+
+.div15 {
+    grid-column-start: 5;
+    grid-row-start: 3;
+}
+
+/* Row 4 */
+.div16 {
+    grid-column-start: 1;
+    grid-row-start: 4;
+}
+
+.div17 {
+    grid-column-start: 2;
+    grid-row-start: 4;
+}
+
+.div18 {
+    grid-column-start: 3;
+    grid-row-start: 4;
+}
+
+.div19 {
+    grid-column-start: 4;
+    grid-row-start: 4;
+}
+
+.div20 {
+    grid-column-start: 5;
+    grid-row-start: 4;
+}
+
+/* Row 5 */
+.div21 {
+    grid-column-start: 1;
+    grid-row-start: 5;
+}
+
+.div22 {
+    grid-column-start: 2;
+    grid-row-start: 5;
+}
+
+.div23 {
+    grid-column-start: 3;
+    grid-row-start: 5;
+}
+
+.div24 {
+    grid-column-start: 4;
+    grid-row-start: 5;
+}

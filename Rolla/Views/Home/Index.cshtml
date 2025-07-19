@@ -2,30 +2,29 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <div style="width: fit-content; margin: 0 auto; transform: translateY(150px) translateX(0px);">
-    <h1 class="display-4">Welcome</h1>
 
-    <div style="width: fit-content; margin: 0 auto; transform: translateY(150px) translateX(0px);">
-        
+
+
+
+        <div class="parent">
+        <div class="div3">
+        <h1 class="display-4">Welcome</h1>
+
+        </div>
+    <div class="div6">
+        <button type="button"
+                class="btn btn-primary rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
+                onclick="location.href='@Url.Action("Index", "DriverHome", new { area = "Driver" })'">
+            Driver Panel
+        </button>
+
     </div>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="div13">
+        <button type="button"
+                class="btn btn-primary rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
+                onclick="location.href='@Url.Action("Index", "RiderHome", new { area = "Rider" })'">
+            <i class="bi bi-house-door-fill"></i>Rider Panel
+        </button>
+    </div>
+
 </div>
-
-<div style="width: fit-content; margin: 0 auto; transform: translateX(-80px);">
-<button type="button"
-        class="btn btn-primary rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
-        onclick="location.href='@Url.Action("Index", "DriverHome", new { area = "Driver" })'">Driver Panel
-</button>
-
-</div>
-<div style="width: fit-content; margin: 0 auto; transform: translateY(-41px) translateX(80px);">
-    <button type="button"
-            class="btn btn-primary rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
-            onclick="location.href='@Url.Action("Index", "RiderHome", new { area = "Rider" })'">
-        <i class="bi bi-house-door-fill"></i>Rider Panel
-    </button>
-</div>
-
-
-efvvf
