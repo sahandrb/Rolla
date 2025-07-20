@@ -1,63 +1,67 @@
 ﻿html {
-  font-size: 14px;
+    font-size: 14px; /* Set base font size to 14 pixels */
 }
 
+
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px; /* Set base font size to 16px on screens wider than 768px */
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb; /* Add layered focus outline: small white then blue shadow */
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative; /* Set position to relative to allow absolute positioning inside */
+    min-height: 100%; /* Ensure html element covers full viewport height */
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px; /* Add bottom margin to prevent content overlap with fixed footer (if any) */
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+    color: var(--bs-secondary-color); /* Set placeholder color using secondary color variable */
+    text-align: end; /* Align placeholder text to the right (end) */
 }
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
-}
-.animated-bg {
-    animation: softFade 12s infinite alternate;
-    background-color: rgb(235, 245, 255);
-    transition: background-color 2s ease;
-    min-height: 100vh;
+    text-align: start; /* Align placeholder text to the left (start) on focus */
 }
 
-body {
-    background-image: url('/wallpaper/artistic-blurry-colorful-wallpaper-background.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+.animated-bg {
+    animation: softFade 12s infinite alternate; /* Apply softFade animation infinitely, alternating direction every 12s */
+    background-color: rgb(235, 245, 255); /* Set initial background color */
+    transition: background-color 2s ease; /* Smooth transition when background color changes */
+    min-height: 100vh; /* Minimum height to fill full viewport height */
 }
+
+
+body {
+    background-image: url('/wallpaper/artistic-blurry-colorful-wallpaper-background.jpg'); /* Set background image */
+    background-size: cover; /* Make background cover the entire element */
+    background-repeat: no-repeat; /* Prevent background from repeating */
+    background-position: center; /* Center the background image */
+}
+
 .parent {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    gap: 8px;
-    
+    display: grid; /* Use grid system for layout */
+    grid-template-columns: repeat(5, 1fr); /* Define 5 columns with equal width */
+    grid-template-rows: repeat(5, 1fr); /* Define 5 rows with equal height */
+    gap: 8px; /* Set 8px gap between grid cells */
 }
 
     .parent > div {
-        padding: 16px;
-        text-align: center;
-        font-weight: bold;
-        display: flex; /* استفاده از فلکس برای مرکز‌چین کردن محتوا */
-        align-items: center; /* وسط‌چین عمودی */
-        justify-content: center;
+        padding: 16px; /* Set 16px padding on all sides */
+        text-align: center; /* Center text horizontally */
+        font-weight: bold; /* Make text bold */
+        display: flex; /* Use flexbox for inner layout */
+        align-items: center; /* Vertically center content */
+        justify-content: center; /* Horizontally center content */
     }
+
 
 /* Row 1 */
 .div1 {
@@ -184,20 +188,20 @@ body {
     grid-row-start: 5;
 }
 
-/*adding style for textboxes*/
+/* Adding style to input boxes */
 .custom-input {
-    background-color: transparent !important; /* پس‌زمینه شفاف و اولویت بالا */
-    box-shadow: none !important; /* حذف سایه پیش‌فرض */
-    border: 2px solid #ced4da;
-    border-radius: 10px;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: transparent !important; /* Make background transparent with high priority */
+    box-shadow: none !important; /* Remove default shadow */
+    border: 2px solid #ced4da; /* Add 2px solid border with light gray color */
+    border-radius: 10px; /* Round corners with 10px radius */
+    padding: 0.75rem 1rem; /* Padding: 0.75rem top/bottom, 1rem left/right */
+    font-size: 1rem; /* Set font size to 1rem */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition for border color and shadow changes */
 }
 
     .custom-input:focus {
-        background-color: transparent !important;
-        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
-        border-color: #0d6efd !important;
-        outline: none !important;
+        background-color: transparent !important; /* Keep background transparent on focus */
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important; /* Show light blue shadow around input on focus */
+        border-color: #0d6efd !important; /* Change border color to blue on focus */
+        outline: none !important; /* Remove default browser outline on focus */
     }

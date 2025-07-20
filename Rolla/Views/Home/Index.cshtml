@@ -1,29 +1,30 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home Page"; // Sets the page title in ViewData for use in layout or elsewhere
 }
 
+<div class="parent">
+    <!-- Container div using grid or flex layout (defined elsewhere) -->
 
+    <div class="div3">
+        <h1 class="display-4">Welcome</h1> <!-- Large heading welcoming the user -->
+    </div>
 
-
-
-        <div class="parent">
-        <div class="div3">
-        <h1 class="display-4">Welcome</h1>
-
-        </div>
     <div class="div7">
+        <!-- Button to navigate to the Driver panel in the Driver area -->
         <button type="button"
                 class="btn btn-primary rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
                 onclick="location.href='@Url.Action("Index", "DriverHome", new { area = "Driver" })'">
             Driver Panel
         </button>
-
     </div>
+
     <div class="div9">
+        <!-- Button to navigate to the Rider panel in the Rider area -->
         <button type="button"
                 class="btn btn-primary rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
                 onclick="location.href='@Url.Action("Index", "RiderHome", new { area = "Rider" })'">
-            <i class="bi bi-house-door-fill"></i>Rider Panel
+            <i class="bi bi-house-door-fill"></i> <!-- Icon of a house before text -->
+            Rider Panel
         </button>
     </div>
 

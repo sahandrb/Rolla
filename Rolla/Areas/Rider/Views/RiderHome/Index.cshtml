@@ -1,37 +1,42 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Sets the layout page for this view
 }
 
-<h1>Rider home page</h1>
-
-
+<h1>Rider home page</h1> <!-- Page heading -->
+<!-- Rider input form with padding, rounded corners, shadow, and light background. Max width set and centered -->
 <form class="p-4 rounded shadow-sm bg-light" style="max-width: 500px; margin: auto;">
-    <div class="mb-3 ">
-        <label for="riderNameInput" class="form-label">Rider Name</label>
-        <input type="text" class="form-control custom-input" id="riderNameInput" placeholder="Enter rider name">
-    </div>
 
+    <!-- Input field for rider name -->
     <div class="mb-3">
-        <label for="riderIdInput" class="form-label">Rider ID</label>
-        <input type="number" class="form-control custom-input" id="riderIdInput" placeholder="Enter rider ID">
+        <label for="riderNameInput" class="form-label">Rider Name</label> <!-- Label for name input -->
+        <input type="text" class="form-control custom-input" id="riderNameInput" placeholder="Enter rider name"> <!-- Text input -->
     </div>
 
+    <!-- Input field for rider ID -->
     <div class="mb-3">
-        <label for="riderTypeInput" class="form-label">Rider Type</label>
-        <input type="number" class="form-control custom-input" id="riderTypeInput" placeholder="Enter rider type">
+        <label for="riderIdInput" class="form-label">Rider ID</label> <!-- Label for ID input -->
+        <input type="number" class="form-control custom-input" id="riderIdInput" placeholder="Enter rider ID"> <!-- Number input -->
     </div>
 
+    <!-- Input field for rider type -->
+    <div class="mb-3">
+        <label for="riderTypeInput" class="form-label">Rider Type</label> <!-- Label for type input -->
+        <input type="number" class="form-control custom-input" id="riderTypeInput" placeholder="Enter rider type"> <!-- Number input -->
+    </div>
+
+    <!-- Submit button for the form -->
     <button type="submit" class="btn btn-primary w-100">Submit Rider</button>
 </form>
 
+<!-- Container for navigation button using grid system -->
 <div class="parent">
-    <div class="div8"><button type="button"
-        class="btn btn-primary rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
-        onclick="location.href='@Url.Action("Index", "Home", new { area = "" })'">
-    <i class="bi bi-house-door-fill"></i>
-    Go to Home
-</button>
+    <div class="div8">
+        <!-- Button to go to the Home page -->
+        <button type="button"
+                class="btn btn-primary rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
+                onclick="location.href='@Url.Action("Index", "Home", new { area = "" })'">
+            <i class="bi bi-house-door-fill"></i> <!-- Home icon -->
+            Go to Home <!-- Button text -->
+        </button>
+    </div>
 </div>
-</div>
-
-

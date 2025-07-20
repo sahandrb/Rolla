@@ -1,11 +1,10 @@
 ﻿namespace Rolla.Models
 {
+    // Represents a driver in the Rolla application
     public class Driver
     {
-        public String Name { get; set; }
-        public int DriverId { get; set; }
-        public int TypeOfCar { get; set; }
-
-
+        public String Name { get; set; }      // Driver's full name
+        public int DriverId { get; set; }     // Unique identifier for the driver
+        public int TypeOfCar { get; set; }    // Type/category of the car the driver uses
     }
 }
