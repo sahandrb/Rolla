@@ -2,6 +2,9 @@
     ViewData["Title"] = "Home Page"; // Sets the page title in ViewData for use in layout or elsewhere
 }
 
+
+
+
 <div class="parent">
     <!-- Container div using grid or flex layout (defined elsewhere) -->
 
@@ -30,3 +33,35 @@
    
 
 </div>
+<h3 class="transport-tagline">
+    Roll fast. Ride smart. <span>Powered by Rolla</span>
+</h3>
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@600&display=swap');
+
+    .transport-tagline {
+        position: absolute;
+        top: 50%; /* بالا بردن ریسپانسیو */
+        left: 50%;
+        transform: translateX(-50%);
+        width: max-content;
+        font-family: 'Urbanist', sans-serif;
+        font-weight: 600;
+        font-size: clamp(1.8rem, 5vw, 2.8rem);
+        color: #1a1a1a;
+        text-align: center;
+        padding: 20px;
+        line-height: 1.4;
+        letter-spacing: 0.5px;
+    }
+
+        .transport-tagline span {
+            display: block;
+            font-size: 0.75em;
+            color: #555;
+            margin-top: 0.5em;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+</style>
