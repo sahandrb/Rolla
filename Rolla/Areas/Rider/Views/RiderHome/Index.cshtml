@@ -4,24 +4,19 @@
 
 <h1>Rider home page</h1> <!-- Page heading -->
 <!-- Rider input form with padding, rounded corners, shadow, and light background. Max width set and centered -->
-<form class="p-4 rounded shadow-sm bg-light" style="max-width: 500px; margin: auto;">
+<form asp-Action="Index"  asp-Controller="RiderController" asp-area="Rider" method="post"  class="p-4 rounded shadow-sm bg-light" style="max-width: 500px; margin: auto;">
 
     <!-- Input field for rider name -->
     <div class="mb-3">
-        <label for="riderNameInput" class="form-label">Rider Name</label> <!-- Label for name input -->
-        <input type="text" class="form-control custom-input" id="riderNameInput" placeholder="Enter rider name"> <!-- Text input -->
+        <label for="riderNameInput" name="Name" class="form-label">Rider Name</label> <!-- Label for name input -->
+        <input type="text" name="Name"class="form-control custom-input" id="riderNameInput" placeholder="Enter rider name"> <!-- Text input -->
     </div>
 
-    <!-- Input field for rider ID -->
-    <div class="mb-3">
-        <label for="riderIdInput" class="form-label">Rider ID</label> <!-- Label for ID input -->
-        <input type="number" class="form-control custom-input" id="riderIdInput" placeholder="Enter rider ID"> <!-- Number input -->
-    </div>
 
     <!-- Input field for rider type -->
     <div class="mb-3">
-        <label for="riderTypeInput" class="form-label">Rider Type</label> <!-- Label for type input -->
-        <input type="number" class="form-control custom-input" id="riderTypeInput" placeholder="Enter rider type"> <!-- Number input -->
+        <label for="riderTypeInput" name="RiderType" class="form-label">Rider Type</label> <!-- Label for type input -->
+        <input type="number" name="RiderType" class="form-control custom-input" id="riderTypeInput" placeholder="Enter rider type"> <!-- Number input -->
     </div>
 
     <!-- Submit button for the form -->

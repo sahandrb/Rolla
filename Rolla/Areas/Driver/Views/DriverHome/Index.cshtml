@@ -4,24 +4,18 @@
 
 <h1>driver home page</h1> <!-- Page title -->
 <!-- Form container with padding, rounded corners, shadow, light background, max width and centered -->
-<form class="p-4 rounded shadow-sm bg-light" style="max-width: 500px; margin: auto; ">
+<form asp-action="Index" asp-controller="DriverHome" asp-area="Driver" method="post" class="p-4 rounded shadow-sm bg-light" style="max-width: 500px; margin: auto;">
+
 
     <!-- Input field for driver's name -->
     <div class="mb-3">
-        <label for="nameInput" class="form-label">Name</label> <!-- Label for name input -->
-        <input type="text" class="form-control custom-input" id="nameInput" placeholder="Enter name"> <!-- Text input -->
+        <label for="nameInput" name="Name" class="form-label">Name</label> <!-- Label for name input -->
+        <input type="text" name="Name" class="form-control custom-input" id="nameInput" placeholder="Enter name"> <!-- Text input -->
     </div>
-
-    <!-- Input field for driver ID -->
-    <div class="mb-3">
-        <label for="driverIdInput" class="form-label">Driver ID</label> <!-- Label for driver ID input -->
-        <input type="number" class="form-control custom-input" id="driverIdInput" placeholder="Enter driver ID"> <!-- Number input -->
-    </div>
-
     <!-- Input field for type of car -->
     <div class="mb-3">
-        <label for="typeOfCarInput" class="form-label">Type of Car</label> <!-- Label for car type input -->
-        <input type="number" class="form-control custom-input" id="typeOfCarInput" placeholder="Enter type of car"> <!-- Number input -->
+        <label for="typeOfCarInput" name="typeOfCar" class="form-label">Type of Car</label> <!-- Label for car type input -->
+        <input type="number" name="typeOfCar" class="form-control custom-input" id="typeOfCarInput" placeholder="Enter type of car"> <!-- Number input -->
     </div>
 
     <!-- Submit button for the form -->
