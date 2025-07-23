@@ -1,12 +1,45 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rolla.Models;
+using Rolla.Data;
 
 namespace Rolla.Areas.Driver.Controllers
 {
-    [Area("Driver")] // Specifies this controller belongs to the "Driver" area
+    [Area("Driver")]
     public class DriverHomeController : Controller
     {
-        // Handles requests to /Driver/DriverHome/Index and returns the default view
+        private readonly AppDbContext _context;
+
+        public DriverHomeController(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        // GET: Driver/DriverHome
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        // POST: Driver/DriverHome
+        [HttpPost]
+        public IActionResult Index(Rolla.Models.Driver model)
+        {
+            if (ModelState.IsValid)
+            {
+                // ذخیره‌سازی در دیتابیس
+                _context.Drivers.Add(model);
+                _context.SaveChanges();
+
+                // ریدایرکت به صفحه موفقیت (یا می‌تونه یک پیام در همون صفحه باشه)
+                return RedirectToAction("Stress", "DriverHome", new { area = "Driver" });
+
+            }
+
+            return View(model);
+        }
+
+        // GET: Driver/DriverHome/Success
+        public IActionResult Stress()
         {
             return View();
         }
