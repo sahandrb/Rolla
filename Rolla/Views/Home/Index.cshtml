@@ -15,7 +15,7 @@
     <div class="div7">
         <!-- Button to navigate to the Driver panel in the Driver area -->
         <button type="button"
-                class="btn btn-primary rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
+                class="btn btn-outline-dark rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
                 onclick="location.href='@Url.Action("Index", "DriverHome", new { area = "Driver" })'">
             Driver Panel
         </button>
@@ -24,7 +24,7 @@
     <div class="div9">
         <!-- Button to navigate to the Rider panel in the Rider area -->
         <button type="button"
-                class="btn btn-primary rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
+                class="btn btn-outline-dark rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
                 onclick="location.href='@Url.Action("Index", "RiderHome", new { area = "Rider" })'">
             <i class="bi bi-house-door-fill"></i> <!-- Icon of a house before text -->
             Rider Panel
@@ -36,32 +36,28 @@
 <h3 class="transport-tagline">
     Roll fast. Ride smart. <span>Powered by Rolla</span>
 </h3>
-
-<style>
-    @@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@600&display=swap');
+@*<style>
+    .tagline-container {
+        display: flex;
+        
+        align-items: center;
+        height: 100vh; /* کل ارتفاع صفحه */
+        justify-content: flex-start;
+        
+    }
 
     .transport-tagline {
-        position: absolute;
-        top: 50%; /* بالا بردن ریسپانسیو */
-        left: 50%;
-        transform: translateX(-50%);
-        width: max-content;
         font-family: 'Urbanist', sans-serif;
         font-weight: 600;
         font-size: clamp(1.8rem, 5vw, 2.8rem);
         color: #1a1a1a;
         text-align: center;
-        padding: 20px;
+        padding: 20px 30px;
         line-height: 1.4;
         letter-spacing: 0.5px;
+        background-color: ;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
-
-        .transport-tagline span {
-            display: block;
-            font-size: 0.75em;
-            color: #555;
-            margin-top: 0.5em;
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
 </style>
+*@

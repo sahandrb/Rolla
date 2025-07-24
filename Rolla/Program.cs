@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 //imlimenting DefaultConnection
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("RollaContext")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("RollaContext"), sqlOptions => sqlOptions.UseNetTopologySuite()));
 
 var app = builder.Build();
 

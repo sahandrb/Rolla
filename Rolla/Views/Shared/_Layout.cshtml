@@ -2,6 +2,10 @@
 
 <html lang="en">
 <head >
+   
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin="" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
@@ -13,6 +17,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Rolla.styles.css" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
 </head>
 <body class="animated-bg">
     <header>
@@ -91,6 +96,25 @@
                 window.location.href = '@Url.Action("Index", "Home", new { area = "" })';
             }, 2500);
         });
+    </script>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <script>
+        // مقداردهی اولیه نقشه
+        var map = L.map('map').setView([35.6892, 51.3890], 13); // تهران
+
+        // بارگذاری لایه کاشی‌ها (tile layer)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // اضافه کردن یک marker ساده
+        L.marker([35.6892, 51.3890]).addTo(map)
+            .bindPopup('موقعیت تهران')
+            .openPopup();
     </script>
 
 </body>

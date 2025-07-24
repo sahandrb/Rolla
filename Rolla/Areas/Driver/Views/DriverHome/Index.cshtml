@@ -4,11 +4,11 @@
 
 
 
-</style>
+
 <!-- Page title -->
 <!-- Form container with padding, rounded corners, shadow, light background, max width and centered -->
-<form  asp-action="Index" asp-controller="DriverHome" asp-area="Driver" method="post" class="p-4 rounded shadow-sm bg-light" style="max-width: 500px; margin: auto;">
-
+<form asp-action="Index" asp-controller="DriverHome" asp-area="Driver" method="post" class="p-4 rounded shadow-sm bg-light" style="max-width: 500px; margin: auto;">
+    
 
     <!-- Input field for driver's name -->
     <div class="mb-3">
@@ -22,7 +22,7 @@
     </div>
 
     <!-- Submit button for the form -->
-    <button type="submit" class="btn btn-primary w-100">Submit</button>
+    <button type="submit" class="btn btn-outline-dark w-100">Submit</button>
 </form>
 
 <!-- Container div for navigation button -->
@@ -30,7 +30,7 @@
     <div class="div8">
         <!-- Button to navigate to Home page -->
         <button type="button"
-                class="btn btn-primary rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
+                class="btn btn-dark rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
                 onclick="location.href='@Url.Action("Index", "Home", new { area = "" })'">
             <i class="bi bi-house-door-fill"></i> <!-- Home icon -->
             Go to Home <!-- Button text -->

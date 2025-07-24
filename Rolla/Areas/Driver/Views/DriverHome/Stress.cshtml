@@ -6,5 +6,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml"; // Specifies the layout page to use
 }
 
-<h1>Stress</h1>
-
+@section Styles {
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+}
+<div id="map"></div>
