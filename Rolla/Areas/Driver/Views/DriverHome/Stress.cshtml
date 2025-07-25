@@ -1,8 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "Stress";
-}
-@{
+
     Layout = "~/Views/Shared/_Layout.cshtml"; // Specifies the layout page to use
 }
 
@@ -14,5 +13,49 @@
             border-radius: 8px;
         }
     </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
 }
+
 <div id="map"></div>
+
+@section Scripts {
+    <!-- Leaflet core -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+
+    <script>
+        // ساخت نقشه با یک نقطه پیش‌فرض (مثلاً تهران)
+        var map = L.map('map').setView([35.6892, 51.3890], 13);
+
+        // اضافه کردن لایه کاشی‌ها
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // موقعیت‌یابی خودکار کاربر و زوم روی آن
+        map.locate({
+            setView: true,    // زوم و حرکت نقشه به موقعیت کاربر
+            maxZoom: 16,
+            watch: false,     // یک بار اجرا می‌کند
+            enableHighAccuracy: true
+        });
+
+        // اگر موقعیت پیدا شد، می‌توانی مارکری اضافه کنی (اختیاری)
+        map.on('locationfound', function(e) {
+            var radius = e.accuracy / 2;
+
+            L.marker(e.latlng).addTo(map)
+                .bindPopup("شما اینجا هستید با دقت حدود " + radius + " متر")
+                .openPopup();
+
+            L.circle(e.latlng, radius).addTo(map);
+        });
+
+        // اگر خطا رخ داد (مثلاً کاربر اجازه نداد)
+        map.on('locationerror', function(e) {
+            alert("موقعیت‌یابی امکان‌پذیر نیست: " + e.message);
+        });
+    </script>
+}
