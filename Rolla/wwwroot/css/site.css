@@ -188,6 +188,7 @@ body {
     grid-row-start: 5;
 }
 
+
 /* Adding style to input boxes */
 .custom-input {
     background-color: transparent !important; /* Make background transparent with high priority */

@@ -11,5 +11,7 @@ namespace Rolla.Data
 
         public DbSet<Driver> Drivers { get; set; }  // Represents the Drivers table
         public DbSet<Rider> Riders { get; set; }    // Represents the Riders table
+        public DbSet<MapRoute> MapRoutes { get; set; }
+
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Rolla.Data;
@@ -12,9 +13,11 @@ using Rolla.Data;
 namespace Rolla.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250726124014_routes")]
+    partial class routes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +46,27 @@ namespace Rolla.Migrations
                     b.ToTable("Drivers");
                 });
 
-            modelBuilder.Entity("Rolla.Models.MapRoute", b =>
+            modelBuilder.Entity("Rolla.Models.Rider", b =>
+                {
+                    b.Property<int>("RiderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RiderId"));
+
+                    b.Property<int>("RiderType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RiderId");
+
+                    b.ToTable("Riders");
+                });
+
+            modelBuilder.Entity("Rolla.Models.Route", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,27 +87,7 @@ namespace Rolla.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MapRoutes");
-                });
-
-            modelBuilder.Entity("Rolla.Models.Rider", b =>
-                {
-                    b.Property<int>("RiderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RiderId"));
-
-                    b.Property<int>("RiderType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("RiderId");
-
-                    b.ToTable("Riders");
+                    b.ToTable("Routes");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,64 +1,212 @@
 ﻿
 @{
+
     ViewData["Title"] = "RMapView";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 
 
 @section Styles {
-        <style>
-            #map {
-                height: 400px;
-                width: 100%;
-                border-radius: 8px;
-            }
-        </style>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <style>
+        #map {
+            position:absolute;
+            height: 450px;
+            width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+
+    <!-- Leaflet core CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Locate control -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+
+    <!-- Geocoding control -->
+    <link rel="stylesheet" href="https://cdn.maptiler.com/maptiler-geocoding-control/v2.1.7/style.css" />
+
+    <style>
+        /* بالا بردن کنترل جستجو مثل هدر */
+        .leaflet-top.leaflet-right {
+            top: 10px !important;
+            right: 50%;
+            transform: translateX(50%);
+        }
+
+        /* بزرگ‌کردن input کنترل جستجو */
+        .maptiler-geocoder-control input {
+            height: 48px;
+            font-size: 18px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90vw;
+        }
+
+        /* تنظیم اندازه لیست نتایج */
+        .maptiler-geocoder-results {
+            font-size: 16px;
+            max-width: 400px;
+        }
+
+        /* جا دادن بهتر در بالای صفحه */
+        #map {
+            position: relative;
+        }
+
+        .leaflet-control.maptiler-geocoder-control {
+            z-index: 1000;
+        }
+    </style>
+
+
 }
 
 <div id="map"></div>
+<button onclick="selectedType='origin'" class="btn btn-outline-primary">انتخاب مبدا</button>
+<button onclick="selectedType='destination'" class="btn btn-outline-primary">انتخاب مقصد</button>
+<button id="saveRouteBtn" class="btn btn-success">ذخیره مسیر</button>
 
 @section Scripts {
-        <!-- Leaflet core -->
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-                integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-                crossorigin=""></script>
+    <!-- Leaflet core -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
 
-        <script>
-            // ساخت نقشه با یک نقطه پیش‌فرض (مثلاً تهران)
-            var map = L.map('map').setView([35.6892, 51.3890], 13);
+    <!-- Maptiler Geocoding Control -->
+    <script src="https://cdn.maptiler.com/maptiler-geocoding-control/v2.1.7/leaflet.umd.js"></script>
 
-            // اضافه کردن لایه کاشی‌ها
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
+    <script>
+        // کلید MapTiler
+        const key = 'JSyPtYpf23JvoxuW2qcO';
 
-            // موقعیت‌یابی خودکار کاربر و زوم روی آن
-            map.locate({
-                setView: true,    // زوم و حرکت نقشه به موقعیت کاربر
-                maxZoom: 16,
-                timeout: 20000, // زمان انتظار برای موقعیت‌یابی (10 ثانیه)
-                watch: false,     // یک بار اجرا می‌کند
-                enableHighAccuracy: true
-            });
+        // ساخت نقشه با موقعیت پیش‌فرض (تهران)
+        var map = L.map('map').setView([35.6892, 51.3890], 13);
+
+        // اضافه کردن لایه کاشی‌ها از OSM
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // اضافه کردن کنترل جستجو
+        L.control.maptilerGeocoding({
+            apiKey: key,
+            position: 'topright',
+            collapsed: false,
+            flyToSelected: false,
+            position: 'topright',
+            limit: 5
+        }).addTo(map);
+
+                // یک متغیر برای نگه‌داشتن مارکر انتخاب‌شده
+        var selectedMarker = null;
+
+        // رویداد کلیک روی نقشه
+        map.on('click', function(e) {
+            var latlng = e.latlng;
+
+            // اگر مارکری قبلاً بوده، حذف کن
+            if (selectedMarker) {
+                map.removeLayer(selectedMarker);
+            }
+
+            // مارکر جدید روی نقطه کلیک‌شده
+            selectedMarker = L.marker(latlng).addTo(map)
+                .bindPopup("مکان انتخاب‌شده: <br>Lat: " + latlng.lat.toFixed(6) + "<br>Lng: " + latlng.lng.toFixed(6))
+                .openPopup();
+
+            // همچنین می‌تونی مختصات رو به فرم یا جایی دیگه منتقل کنی:
+            console.log("مختصات انتخاب‌شده:", latlng.lat, latlng.lng);
+
+            // مثال: انتقال مختصات به input hidden (اگه در فرم باشه)
+            // document.getElementById('LatitudeInput').value = latlng.lat;
+            // document.getElementById('LongitudeInput').value = latlng.lng;
+        });
 
 
-            // اگر موقعیت پیدا شد، می‌توانی مارکری اضافه کنی (اختیاری)
-            map.on('locationfound', function(e) {
-                var radius = e.accuracy / 2;
+        // موقعیت‌یابی خودکار کاربر و زوم روی آن
 
-                L.marker(e.latlng).addTo(map)
-                    .bindPopup("شما اینجا هستید با دقت حدود " + radius + " متر")
-                    .openPopup();
+    </script>
+    <script>
+        let originLatLng = null;
+        let destinationLatLng = null;
+        let selectedType = 'origin';
 
-                L.circle(e.latlng, radius).addTo(map);
-            });
+        let originMarker = null;
+        let destinationMarker = null;
 
-            // اگر خطا رخ داد (مثلاً کاربر اجازه نداد)
-            map.on('locationerror', function(e) {
-                alert("موقعیت‌یابی امکان‌پذیر نیست: " + e.message);
-            });
-        </script>
+        map.on('click', function (e) {
+            const latlng = e.latlng;
+
+            if (selectedType === 'origin') {
+                originLatLng = latlng;
+                if (originMarker) map.removeLayer(originMarker);
+                originMarker = L.marker(latlng).addTo(map).bindPopup("مبدا").openPopup();
+            } else {
+                destinationLatLng = latlng;
+                if (destinationMarker) map.removeLayer(destinationMarker);
+                destinationMarker = L.marker(latlng).addTo(map).bindPopup("مقصد").openPopup();
+            }
+        });
+                map.locate({
+            setView: true,
+            maxZoom: 16,
+            timeout: 20000,
+            watch: false,
+            enableHighAccuracy: true
+        });
+
+
+
+
+
+        map.on('locationerror', function(e) {
+            alert("موقعیت‌یابی امکان‌پذیر نیست: " + e.message);
+        });
+
+        document.getElementById("saveRouteBtn").addEventListener("click", function () {
+            if (!originLatLng || !destinationLatLng) {
+                alert("هر دو نقطه مبدا و مقصد را مشخص کنید.");
+                return;
+            }
+
+            fetch('/Route/SaveCoordinates', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    origin: { lat: originLatLng.lat, lng: originLatLng.lng },
+                    destination: { lat: destinationLatLng.lat, lng: destinationLatLng.lng }
+                })
+            })
+            .then(res => res.ok ? alert("با موفقیت ذخیره شد.") : alert("خطا در ذخیره!"));
+        });
+    </script>
+    <script>
+        let selectedType = null;
+
+        const btnOrigin = document.getElementById('btnOrigin');
+        const btnDestination = document.getElementById('btnDestination');
+
+        btnOrigin.addEventListener('click', function() {
+            selectedType = 'origin';
+            btnOrigin.classList.add('btn-primary');
+            btnOrigin.classList.remove('btn-outline-primary');
+
+            btnDestination.classList.remove('btn-primary');
+            btnDestination.classList.add('btn-outline-primary');
+        });
+
+        btnDestination.addEventListener('click', function() {
+            selectedType = 'destination';
+            btnDestination.classList.add('btn-primary');
+            btnDestination.classList.remove('btn-outline-primary');
+
+            btnOrigin.classList.remove('btn-primary');
+            btnOrigin.classList.add('btn-outline-primary');
+        });
+    </script>
+
 }
