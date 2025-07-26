@@ -1,7 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Welcome";
-
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿
+@{
+    ViewData["Title"] = "DMapView";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Specifies the layout page to use
 }
 
 @section Styles {
@@ -37,6 +37,7 @@
         map.locate({
             setView: true,    // زوم و حرکت نقشه به موقعیت کاربر
             maxZoom: 16,
+            timeout: 20000,// زمان انتظار برای موقعیت‌یابی (10 ثانیه)
             watch: false,     // یک بار اجرا می‌کند
             enableHighAccuracy: true
         });

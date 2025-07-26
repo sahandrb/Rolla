@@ -31,7 +31,7 @@ namespace Rolla.Areas.Driver.Controllers
                 _context.SaveChanges();
 
                 // ریدایرکت به صفحه موفقیت (یا می‌تونه یک پیام در همون صفحه باشه)
-                return RedirectToAction("Stress", "DriverHome", new { area = "Driver" });
+                return RedirectToAction("DMapView", "DriverHome", new { area = "Driver" });
 
             }
 
@@ -39,7 +39,7 @@ namespace Rolla.Areas.Driver.Controllers
         }
 
         // GET: Driver/DriverHome/Success
-        public IActionResult Stress()
+        public IActionResult DMapView()
         {
             return View();
         }

@@ -27,11 +27,11 @@ namespace Rolla.Areas.Rider.Controllers
             {
                 _context.Riders.Add(rider);
                 _context.SaveChanges();
-                return RedirectToAction("Welcome", "RiderHome", new { area = "Rider" });
+                return RedirectToAction("RMapView", "RiderHome", new { area = "Rider" });
             }
             return View(rider);
         }
-        public IActionResult Welcome()
+        public IActionResult RMapView()
         {
             return View();
         }
