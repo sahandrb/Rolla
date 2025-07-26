@@ -1,17 +1,12 @@
-﻿
-@{
-
-    ViewData["Title"] = "RMapView";
+﻿@{
+    ViewData["Title"] = "RiderMapView";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
 }
-
-
 
 @section Styles {
     <style>
         #map {
-            position:absolute;
+            position: absolute;
             height: 450px;
             width: 100%;
             border-radius: 8px;
@@ -60,13 +55,11 @@
             z-index: 1000;
         }
     </style>
-
-
 }
 
 <div id="map"></div>
-<button onclick="selectedType='origin'" class="btn btn-outline-primary">انتخاب مبدا</button>
-<button onclick="selectedType='destination'" class="btn btn-outline-primary">انتخاب مقصد</button>
+<button onclick="selectedType='origin'" class="btn btn-outline-primary" id="btnOrigin">انتخاب مبدا</button>
+<button onclick="selectedType='destination'" class="btn btn-outline-primary" id="btnDestination">انتخاب مقصد</button>
 <button id="saveRouteBtn" class="btn btn-success">ذخیره مسیر</button>
 
 @section Scripts {
@@ -79,58 +72,39 @@
     <script src="https://cdn.maptiler.com/maptiler-geocoding-control/v2.1.7/leaflet.umd.js"></script>
 
     <script>
-        // کلید MapTiler
         const key = 'JSyPtYpf23JvoxuW2qcO';
 
-        // ساخت نقشه با موقعیت پیش‌فرض (تهران)
         var map = L.map('map').setView([35.6892, 51.3890], 13);
 
-        // اضافه کردن لایه کاشی‌ها از OSM
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // اضافه کردن کنترل جستجو
         L.control.maptilerGeocoding({
             apiKey: key,
             position: 'topright',
             collapsed: false,
             flyToSelected: false,
-            position: 'topright',
             limit: 5
         }).addTo(map);
 
-                // یک متغیر برای نگه‌داشتن مارکر انتخاب‌شده
-        var selectedMarker = null;
+        let selectedMarker = null;
 
-        // رویداد کلیک روی نقشه
         map.on('click', function(e) {
             var latlng = e.latlng;
 
-            // اگر مارکری قبلاً بوده، حذف کن
             if (selectedMarker) {
                 map.removeLayer(selectedMarker);
             }
 
-            // مارکر جدید روی نقطه کلیک‌شده
             selectedMarker = L.marker(latlng).addTo(map)
                 .bindPopup("مکان انتخاب‌شده: <br>Lat: " + latlng.lat.toFixed(6) + "<br>Lng: " + latlng.lng.toFixed(6))
                 .openPopup();
 
-            // همچنین می‌تونی مختصات رو به فرم یا جایی دیگه منتقل کنی:
             console.log("مختصات انتخاب‌شده:", latlng.lat, latlng.lng);
-
-            // مثال: انتقال مختصات به input hidden (اگه در فرم باشه)
-            // document.getElementById('LatitudeInput').value = latlng.lat;
-            // document.getElementById('LongitudeInput').value = latlng.lng;
         });
 
-
-        // موقعیت‌یابی خودکار کاربر و زوم روی آن
-
-    </script>
-    <script>
         let originLatLng = null;
         let destinationLatLng = null;
         let selectedType = 'origin';
@@ -151,17 +125,14 @@
                 destinationMarker = L.marker(latlng).addTo(map).bindPopup("مقصد").openPopup();
             }
         });
-                map.locate({
+
+        map.locate({
             setView: true,
             maxZoom: 16,
             timeout: 20000,
             watch: false,
             enableHighAccuracy: true
         });
-
-
-
-
 
         map.on('locationerror', function(e) {
             alert("موقعیت‌یابی امکان‌پذیر نیست: " + e.message);
@@ -173,7 +144,7 @@
                 return;
             }
 
-            fetch('/Route/SaveCoordinates', {
+            fetch('/RiderRoute/SaveCoordinates', {  // اینجا تغییر مسیر به RiderRoute
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -183,9 +154,6 @@
             })
             .then(res => res.ok ? alert("با موفقیت ذخیره شد.") : alert("خطا در ذخیره!"));
         });
-    </script>
-    <script>
-        let selectedType = null;
 
         const btnOrigin = document.getElementById('btnOrigin');
         const btnDestination = document.getElementById('btnDestination');
@@ -208,5 +176,4 @@
             btnOrigin.classList.add('btn-outline-primary');
         });
     </script>
-
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Rolla.Data;
@@ -12,9 +13,11 @@ using Rolla.Data;
 namespace Rolla.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250726161735_change")]
+    partial class change
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,30 +68,6 @@ namespace Rolla.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MapRouteDrivers");
-                });
-
-            modelBuilder.Entity("Rolla.Models.MapRouteRider", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Point>("Destination")
-                        .IsRequired()
-                        .HasColumnType("geography");
-
-                    b.Property<Point>("Origin")
-                        .IsRequired()
-                        .HasColumnType("geography");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MapRouteRiders");
                 });
 
             modelBuilder.Entity("Rolla.Models.Rider", b =>
