@@ -4,38 +4,48 @@ using Rolla.Data;
 
 namespace Rolla.Areas.Rider.Controllers
 {
+    // این کنترلر مربوط به بخش Rider است و کار مدیریت صفحه اصلی مسافر را بر عهده دارد
     [Area("Rider")]
     public class RiderHomeController : Controller
     {
         private readonly AppDbContext _context;
 
+        // سازنده کنترلر که کانتکست دیتابیس را از طریق تزریق وابستگی دریافت می‌کند
+        // این کانتکست برای دسترسی به داده‌های مربوط به مسافران استفاده می‌شود
         public RiderHomeController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: Rider/RiderHome
+        // متد مربوط به درخواست GET که صفحه اصلی مسافر را نمایش می‌دهد
+        // این صفحه معمولاً شامل فرم ثبت اطلاعات مسافر است تا بتواند درخواست سفر را آغاز کند
         public IActionResult Index()
         {
             return View();
         }
 
-        // POST: Rider/RiderHome
+        // متد مربوط به درخواست POST که زمانی اجرا می‌شود که فرم ثبت اطلاعات مسافر ارسال شود
+        // در این متد داده‌های دریافتی اعتبارسنجی می‌شوند و اگر صحیح باشند، اطلاعات مسافر در دیتابیس ذخیره می‌شود
+        // پس از ذخیره موفق، کاربر به صفحه دیگری هدایت می‌شود که نقشه یا وضعیت سفر را نمایش می‌دهد
+        // در صورت وجود خطا در اعتبارسنجی، مجدداً همان فرم به همراه پیام خطا به کاربر نمایش داده می‌شود
         [HttpPost]
         public IActionResult Index(Rolla.Models.Rider model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) // بررسی صحت داده‌های ورودی فرم
             {
-                _context.Riders.Add(model);
-                _context.SaveChanges();
+                _context.Riders.Add(model); // اضافه کردن اطلاعات مسافر به جدول Riders در دیتابیس
+                _context.SaveChanges(); // ذخیره تغییرات در دیتابیس
 
+                // انتقال کاربر به صفحه نمایش نقشه یا وضعیت سفر در صورت موفقیت ذخیره سازی
                 return RedirectToAction("RMapView", "RiderHome", new { area = "Rider" });
             }
 
+            // اگر داده‌ها معتبر نباشند، فرم به همراه خطاها دوباره نمایش داده می‌شود
             return View(model);
         }
 
-        // GET: Rider/RiderHome/RMapView
+        // متدی که صفحه نقشه یا وضعیت مسافر را نمایش می‌دهد
+        // این صفحه پس از ثبت موفق اطلاعات مسافر نمایش داده می‌شود
         public IActionResult RMapView()
         {
             return View();

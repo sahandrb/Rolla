@@ -1,39 +1,53 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml"; // Specifies the layout page to use
+    // مشخص کردن Layout کلی برای این View که از فایل _Layout.cshtml استفاده می‌کند
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<!--
+    فرم ارسال اطلاعات راننده
+    ویژگی‌های کلیدی فرم:
+    - متد ارسال POST
+    - مقصد ارسال به اکشن Index کنترلر DriverHome در ناحیه Driver
+    - استایل‌های آماده Bootstrap برای زیبایی و چینش مناسب
+    - محدود کردن عرض فرم به 500 پیکسل و قرارگیری وسط صفحه
+-->
+<form asp-action="Index" asp-controller="DriverHome" asp-area="Driver" method="post"
+      class="p-4 rounded shadow-sm bg-light" style="max-width: 500px; margin: auto;">
 
-
-
-<!-- Page title -->
-<!-- Form container with padding, rounded corners, shadow, light background, max width and centered -->
-<form asp-action="Index" asp-controller="DriverHome" asp-area="Driver" method="post" class="p-4 rounded shadow-sm bg-light" style="max-width: 500px; margin: auto;">
-    
-
-    <!-- Input field for driver's name -->
+    <!-- فیلد ورودی برای نام راننده -->
     <div class="mb-3">
-        <label for="nameInput" name="Name" class="form-label">Name</label> <!-- Label for name input -->
-        <input type="text" name="Name" class="form-control custom-input" id="nameInput" placeholder="Enter name"> <!-- Text input -->
-    </div>
-    <!-- Input field for type of car -->
-    <div class="mb-3">
-        <label for="typeOfCarInput" name="typeOfCar" class="form-label">Type of Car</label> <!-- Label for car type input -->
-        <input type="number" name="typeOfCar" class="form-control custom-input" id="typeOfCarInput" placeholder="Enter type of car"> <!-- Number input -->
+        <!-- برچسب ورودی که با input مرتبط است -->
+        <label for="nameInput" name="Name" class="form-label">Name</label>
+        <!-- فیلد متنی برای وارد کردن نام -->
+        <input type="text" name="Name" class="form-control custom-input" id="nameInput" placeholder="Enter name">
     </div>
 
-    <!-- Submit button for the form -->
+    <!-- فیلد ورودی برای نوع خودرو -->
+    <div class="mb-3">
+        <!-- برچسب ورودی برای نوع خودرو -->
+        <label for="typeOfCarInput" name="typeOfCar" class="form-label">Type of Car</label>
+        <!-- فیلد عددی برای وارد کردن نوع خودرو -->
+        <input type="number" name="typeOfCar" class="form-control custom-input" id="typeOfCarInput" placeholder="Enter type of car">
+    </div>
+
+    <!-- دکمه ارسال فرم با عرض کامل و استایل دکمه‌های Bootstrap -->
     <button type="submit" class="btn btn-outline-dark w-100">Submit</button>
 </form>
 
-<!-- Container div for navigation button -->
+<!--
+    ظرف (div) والد برای دکمه ناوبری به صفحه خانه
+    کلاس‌ها برای چینش و استایل شخصی استفاده شده‌اند
+-->
 <div class="parent">
     <div class="div8">
-        <!-- Button to navigate to Home page -->
+        <!-- دکمه‌ای که با کلیک روی آن کاربر به صفحه اصلی سایت هدایت می‌شود -->
         <button type="button"
                 class="btn btn-dark rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
                 onclick="location.href='@Url.Action("Index", "Home", new { area = "" })'">
-            <i class="bi bi-house-door-fill"></i> <!-- Home icon -->
-            Go to Home <!-- Button text -->
+            <!-- آیکون خانه (Home) از Bootstrap Icons -->
+            <i class="bi bi-house-door-fill"></i>
+            <!-- متن دکمه -->
+            Go to Home
         </button>
     </div>
 </div>
