@@ -2,6 +2,7 @@
 using NetTopologySuite.Geometries;
 using Rolla.Models;
 using Rolla.Data;
+using Newtonsoft.Json;
 
 namespace Rolla.Controllers
 {
@@ -22,16 +23,24 @@ namespace Rolla.Controllers
         [HttpPost("SaveCoordinates")]
         public async Task<IActionResult> SaveCoordinates([FromBody] RouteDto dto)
         {
-            // بررسی اعتبار ورودی‌ها: اگر مبدا یا مقصد خالی بود، خطا بازگردانده می‌شود
-            if (dto?.Origin == null || dto.Destination == null)
-                return BadRequest("مقدار مبدا یا مقصد خالی است.");
 
+
+            var Json = HttpContext.Session.GetString("RiderDto");
+            if (string.IsNullOrEmpty(Json))
+            {
+                // اگر سشن خالی بود، وضعیت خطا برمی‌گرداند
+                return BadRequest("Session data is missing.");
+            }
+            var dtoR = JsonConvert.DeserializeObject<RiderDto>(Json);
             // ایجاد شیء جدید از مسیر با تبدیل مختصات به ساختار Point (دارای SRID استاندارد 4326)
             var route = new MapRouteRider
             {
                 Origin = new Point(dto.Origin.Lng, dto.Origin.Lat) { SRID = 4326 },
                 Destination = new Point(dto.Destination.Lng, dto.Destination.Lat) { SRID = 4326 },
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                RoutingDCode = dtoR.RoutingRCode // استفاده از RoutingDCode دریافتی از سشن
+
+
             };
 
             // افزودن مسیر به دیتابیس و ذخیره تغییرات به‌صورت async

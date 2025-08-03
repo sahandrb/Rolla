@@ -5,6 +5,8 @@
     {
         public string name { get; set; }       // Rider's full name
         public int RiderId { get; set; }       // Unique identifier for the rider
-        public int RiderType { get; set; }     // Category or type of the rider
+        public int RiderType { get; set; }  
+        
+        public int RoutingRCode { get; set; }// Category or type of the rider
     }
 }

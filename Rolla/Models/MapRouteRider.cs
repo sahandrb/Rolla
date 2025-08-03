@@ -29,5 +29,7 @@ namespace Rolla.Models
         /// Used for auditing and chronological ordering of routes.
         /// </summary>
         public DateTime CreatedAt { get; set; }
+
+        public int RoutingDCode { get; set; } = default!;
     }
 }

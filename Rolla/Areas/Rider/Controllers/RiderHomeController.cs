@@ -35,6 +35,19 @@ namespace Rolla.Areas.Rider.Controllers
             {
                 _context.Riders.Add(model); // اضافه کردن اطلاعات مسافر به جدول Riders در دیتابیس
                 _context.SaveChanges(); // ذخیره تغییرات در دیتابیس
+                model.RoutingRCode = model.RiderId + 1000;
+
+                _context.Riders.Update(model); // به‌روزرسانی اطلاعات مسافر در دیتابیس
+                _context.SaveChanges(); // ذخیره تغییرات در دیتابیس
+
+
+                var Dto = new RiderDto
+                {
+                    RoutingRCode = model.RiderId + 1000 // فرض بر این است که RoutingRCode بر اساس RiderId محاسبه می‌شود
+                };
+                var RiderDto = System.Text.Json.JsonSerializer.Serialize(Dto); // سریالیزه کردن داده‌ها به فرمت JSON
+                HttpContext.Session.SetString("RiderDto", RiderDto); // ذخیره داده‌های مسافر در سشن برای دسترسی در آینده
+              
 
                 // انتقال کاربر به صفحه نمایش نقشه یا وضعیت سفر در صورت موفقیت ذخیره سازی
                 return RedirectToAction("RMapView", "RiderHome", new { area = "Rider" });
