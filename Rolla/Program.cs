@@ -1,6 +1,7 @@
-using Rolla.Models;
+﻿using Rolla.Models;
 using Rolla.Data;
 using Microsoft.EntityFrameworkCore;
+using Rolla.BackGroundServices;
 
 
 
@@ -12,7 +13,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("RollaContext"), sqlOptions => sqlOptions.UseNetTopologySuite()));
 
-builder.Services.AddSession();  // AddSession
+builder.Services.AddSession(); 
+// AddSession
+builder.Services.AddHostedService<RouteCleanerService>();  //سرویس غیر فعال کردن به صورت اتوماتیک
 
 var app = builder.Build();
 

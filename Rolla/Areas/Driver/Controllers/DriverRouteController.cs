@@ -37,8 +37,9 @@ namespace Rolla.Areas.Driver.Controllers
                 Origin = new Point(dto.Origin.Lng, dto.Origin.Lat) { SRID = 4326 },       // نقطه مبدأ با سیستم مختصات جهانی WGS84
                 Destination = new Point(dto.Destination.Lng, dto.Destination.Lat) { SRID = 4326 }, // نقطه مقصد
                 CreatedAt = DateTime.UtcNow ,// ثبت زمان ایجاد مسیر به صورت UTC
-                RoutingDCode = dtoD.RoutingDCode // استفاده از RoutingDCode دریافتی از سشن
-
+                RoutingDCode = dtoD.RoutingDCode ,// استفاده از RoutingDCode دریافتی از سشن
+                IsActive = true ,
+                NotFound = true
             };
 
             // افزودن مسیر به دیتابیس و ذخیره‌سازی به صورت غیرهمزمان

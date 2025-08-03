@@ -32,5 +32,9 @@ namespace Rolla.Models
 
 
         public int RoutingDCode { get; set; } = default!;
+
+        public bool IsActive { get; set; } = true; // Indicates if the route is currently active or not
+
+        public bool NotFound { get; set; } = true;
     }
 }
