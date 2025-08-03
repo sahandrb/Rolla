@@ -5,7 +5,7 @@ using Rolla.Data;
 using Rolla.Models;
 using Newtonsoft.Json;
 
-namespace YourApp.Controllers
+namespace Rolla.Areas.Driver.Controllers
 {
     // کنترلری برای مدیریت مسیر راننده و ذخیره مختصات جغرافیایی در دیتابیس
     [Route("Route")]

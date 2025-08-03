@@ -4,7 +4,7 @@ using Rolla.Models;
 using Rolla.Data;
 using Newtonsoft.Json;
 
-namespace Rolla.Controllers
+namespace Rolla.Areas.Rider.Controllers
 {
     // کنترلر مربوط به دریافت و ذخیره مختصات مسیر مسافر (رکورد مسیر جغرافیایی)
     [Route("RiderRoute")]
