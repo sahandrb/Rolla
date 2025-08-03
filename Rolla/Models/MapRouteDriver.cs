@@ -29,5 +29,8 @@ namespace Rolla.Models
         /// Useful for tracking and ordering route entries.
         /// </summary>
         public DateTime CreatedAt { get; set; }
+
+
+        public int RoutingDCode { get; set; } = default!;
     }
 }

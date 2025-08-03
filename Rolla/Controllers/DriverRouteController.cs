@@ -3,6 +3,7 @@ using NetTopologySuite.Geometries;
 using Rolla.Models;
 using Rolla.Data;
 using Rolla.Models;
+using Newtonsoft.Json;
 
 namespace YourApp.Controllers
 {
@@ -23,12 +24,21 @@ namespace YourApp.Controllers
         [HttpPost("SaveCoordinates")]
         public async Task<IActionResult> SaveCoordinates([FromBody] RouteDto dto)
         {
+            var Json = HttpContext.Session.GetString("DriverDto");
+            if (string.IsNullOrEmpty(Json))
+            {
+                // اگر سشن خالی بود، وضعیت خطا برمی‌گرداند
+                return BadRequest("Session data is missing.");
+            }
+            var dtoD = JsonConvert.DeserializeObject<DriverDto>(Json);
             // ایجاد یک مسیر جدید بر اساس مختصات دریافتی، با فرمت نقطه جغرافیایی و SRID استاندارد
             var route = new MapRouteDriver
             {
                 Origin = new Point(dto.Origin.Lng, dto.Origin.Lat) { SRID = 4326 },       // نقطه مبدأ با سیستم مختصات جهانی WGS84
                 Destination = new Point(dto.Destination.Lng, dto.Destination.Lat) { SRID = 4326 }, // نقطه مقصد
-                CreatedAt = DateTime.UtcNow // ثبت زمان ایجاد مسیر به صورت UTC
+                CreatedAt = DateTime.UtcNow ,// ثبت زمان ایجاد مسیر به صورت UTC
+                RoutingDCode = dtoD.RoutingDCode // استفاده از RoutingDCode دریافتی از سشن
+
             };
 
             // افزودن مسیر به دیتابیس و ذخیره‌سازی به صورت غیرهمزمان

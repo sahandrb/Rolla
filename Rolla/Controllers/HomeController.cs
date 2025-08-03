@@ -22,6 +22,8 @@ namespace Rolla.Controllers
             return View();
         }
 
+  
+
         // GET: /Privacy
         // ‰„«?‘ ’›ÕÂ ”?«” ùÂ«? Õ—?„ Œ’Ê’? (Privacy Policy)
         public IActionResult Privacy()

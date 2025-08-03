@@ -54,7 +54,7 @@ body {
 }
 
     .parent > div {
-        padding: 16px; /* Set 16px padding on all sides */
+        padding: +++16px; /* Set 16px padding on all sides */
         text-align: center; /* Center text horizontally */
         font-weight: bold; /* Make text bold */
         display: flex; /* Use flexbox for inner layout */

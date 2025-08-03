@@ -33,6 +33,21 @@ namespace Rolla.Areas.Driver.Controllers
                 // اگر مدل معتبر بود، داده‌ها را به جدول Driver اضافه می‌کنیم
                 _context.Drivers.Add(model);
                 _context.SaveChanges();
+                
+                model.RoutingDCode = model.DriverId + 1000; // فرض بر این است که RoutingDCode بر اساس DriverId محاسبه می‌شود
+                
+
+                _context.Drivers.Update(model);
+                _context.SaveChanges();
+
+
+                var Dto = new DriverDto
+                {
+                    RoutingDCode = model.RoutingDCode 
+                };
+                var DriverDto = System.Text.Json.JsonSerializer.Serialize(Dto);
+                HttpContext.Session.SetString("DriverDto", DriverDto);
+
 
                 // پس از ثبت موفقیت‌آمیز، کاربر به نمای نقشه هدایت می‌شود
                 return RedirectToAction("DMapView", "DriverHome", new { area = "Driver" });

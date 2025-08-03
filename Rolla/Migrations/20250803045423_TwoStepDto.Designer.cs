@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Rolla.Data;
@@ -12,9 +13,11 @@ using Rolla.Data;
 namespace Rolla.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250803045423_TwoStepDto")]
+    partial class TwoStepDto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,9 +67,6 @@ namespace Rolla.Migrations
                     b.Property<Point>("Origin")
                         .IsRequired()
                         .HasColumnType("geography");
-
-                    b.Property<int>("RoutingDCode")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

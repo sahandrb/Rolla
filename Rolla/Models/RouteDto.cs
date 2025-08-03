@@ -15,6 +15,9 @@
         /// Ending point of the route as latitude and longitude.
         /// </summary>
         public LatLng Destination { get; set; } = default!;
+
+
+        
     }
 
     /// <summary>

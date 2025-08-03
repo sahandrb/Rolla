@@ -8,6 +8,8 @@ namespace Rolla.Models
         public String Name { get; set; }      // Driver's full name
         [Key]
         public int DriverId { get; set; }     // Unique identifier for the driver
-        public int TypeOfCar { get; set; }    // Type/category of the car the driver uses
+        public int TypeOfCar { get; set; }
+        
+        public int RoutingDCode { get; set; }
     }
 }
