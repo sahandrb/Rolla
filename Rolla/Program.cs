@@ -2,6 +2,7 @@
 using Rolla.Data;
 using Microsoft.EntityFrameworkCore;
 using Rolla.BackGroundServices;
+using Rolla.Services;
 
 
 
@@ -17,7 +18,15 @@ builder.Services.AddSession();
 // AddSession
 builder.Services.AddHostedService<RouteCleanerService>();  //سرویس غیر فعال کردن به صورت اتوماتیک
 
+builder.Services.AddScoped<IDRouteServices, DRouteServices>();
+
+
+
+
+
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

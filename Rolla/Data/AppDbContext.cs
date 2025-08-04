@@ -37,5 +37,10 @@ namespace Rolla.Data
         /// Used to manage ride participation or preferences.
         /// </summary>
         public DbSet<MapRouteRider> MapRouteRiders { get; set; }
+
+        internal async Task SaveChangeAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
