@@ -3,6 +3,7 @@ using NetTopologySuite.Geometries;
 using Rolla.Models;
 using Rolla.Data;
 using Newtonsoft.Json;
+using Rolla.Services;
 
 namespace Rolla.Areas.Rider.Controllers
 {
@@ -10,12 +11,14 @@ namespace Rolla.Areas.Rider.Controllers
     [Route("RiderRoute")]
     public class RiderRouteController : Controller
     {
+        private IRRouteServices _rRouteServices;
         private readonly AppDbContext _context;
 
         // سازنده کلاس برای دریافت وابستگی به دیتابیس از طریق DI
-        public RiderRouteController(AppDbContext context)
+        public RiderRouteController(AppDbContext context , IRRouteServices rRouteServices)
         {
             _context = context;
+            _rRouteServices = rRouteServices;
         }
 
         // POST: RiderRoute/SaveCoordinates
@@ -23,32 +26,21 @@ namespace Rolla.Areas.Rider.Controllers
         [HttpPost("SaveCoordinates")]
         public async Task<IActionResult> SaveCoordinates([FromBody] RouteDto dto)
         {
-
-
             var Json = HttpContext.Session.GetString("RiderDto");
-            if (string.IsNullOrEmpty(Json))
+            if (String.IsNullOrEmpty(Json))
             {
-                // اگر سشن خالی بود، وضعیت خطا برمی‌گرداند
-                return BadRequest("Session data is missing.");
+                return BadRequest("RiderDto Not Found in Session");
             }
-            var dtoR = JsonConvert.DeserializeObject<RiderDto>(Json);
-            // ایجاد شیء جدید از مسیر با تبدیل مختصات به ساختار Point (دارای SRID استاندارد 4326)
-            var route = new MapRouteRider
+            var riderDto = JsonConvert.DeserializeObject<RiderDto>(Json);
+            var Success = await _rRouteServices.SaveCordinates(dto, riderDto);
+            if (Success)
             {
-                Origin = new Point(dto.Origin.Lng, dto.Origin.Lat) { SRID = 4326 },
-                Destination = new Point(dto.Destination.Lng, dto.Destination.Lat) { SRID = 4326 },
-                CreatedAt = DateTime.UtcNow,
-                RoutingDCode = dtoR.RoutingRCode // استفاده از RoutingDCode دریافتی از سشن
-
-
-            };
-
-            // افزودن مسیر به دیتابیس و ذخیره تغییرات به‌صورت async
-            _context.MapRouteRiders.Add(route);
-            await _context.SaveChangesAsync();
-
-            // بازگرداندن وضعیت موفقیت‌آمیز به کلاینت (status code 200)
-            return Ok();
+                return Ok("Cordinates Saved Successfully");
+            }
+            else
+            {
+                return StatusCode(500, "An error occurred while saving coordinates.");
+            }
         }
     }
 }

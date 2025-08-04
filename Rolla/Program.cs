@@ -12,14 +12,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 //imlimenting DefaultConnection
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("RollaContext"), sqlOptions => sqlOptions.UseNetTopologySuite()));
+options.UseSqlServer(builder.Configuration.GetConnectionString("RollaContext"), sqlOptions => sqlOptions.UseNetTopologySuite()));
 
 builder.Services.AddSession(); 
 // AddSession
 builder.Services.AddHostedService<RouteCleanerService>();  //سرویس غیر فعال کردن به صورت اتوماتیک
 
 builder.Services.AddScoped<IDRouteServices, DRouteServices>();
-
+builder.Services.AddScoped<IRRouteServices, RRouteServices>();
 
 
 
