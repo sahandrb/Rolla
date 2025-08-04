@@ -33,13 +33,20 @@ namespace Rolla.Areas.Rider.Controllers
             }
             var riderDto = JsonConvert.DeserializeObject<RiderDto>(Json);
             var Success = await _rRouteServices.SaveCordinates(dto, riderDto);
+
             if (!Success)
             {
                 return StatusCode(500, "An error occurred while saving coordinates.");
             }
-            return RedirectToAction("SearchDrivers", "RiderSearch", new { area = "Rider" });
+            else
+            {
+                return Ok("Coordinates saved successfully.");
+            }
+
 
 
         }
+
+
     }
 }

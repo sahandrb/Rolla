@@ -76,6 +76,9 @@
 <!-- دکمه ذخیره مسیر -->
 <button id="saveRouteBtn" class="btn btn-success">ذخیره مسیر</button>
 
+<button id="searchDriversBtn" class="btn btn-info">جستجوی راننده‌ها</button>
+
+
 @section Scripts {
     <!-- اسکریپت اصلی کتابخانه Leaflet برای نقشه -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -175,6 +178,20 @@
             })
             .then(res => res.ok ? alert("با موفقیت ذخیره شد.") : alert("خطا در ذخیره!"));
         });
+
+
+            document.getElementById("searchDriversBtn").addEventListener("click", function() {
+            if (!originLatLng) {
+                alert("لطفاً ابتدا مبدا را انتخاب کنید.");
+                return;
+            }
+            // ریدایرکت به کنترلر RiderSearch/SearchDrivers با پارامترهای مبدا
+            window.location.href = `/Rider/RiderSearch/SearchDrivers?lat=${originLatLng.lat}&lng=${originLatLng.lng}`;
+        });
+
+
+
+
 
         // دسترسی به دکمه‌های انتخاب مبدا و مقصد
         const btnOrigin = document.getElementById('btnOrigin');
