@@ -20,6 +20,7 @@ builder.Services.AddHostedService<RouteCleanerService>();  //سرویس غیر �
 
 builder.Services.AddScoped<IDRouteServices, DRouteServices>();
 builder.Services.AddScoped<IRRouteServices, RRouteServices>();
+builder.Services.AddScoped<IGeoJsonServiceIGeoJsonService, GeoJsonServiceIGeoJsonService>();
 
 
 
