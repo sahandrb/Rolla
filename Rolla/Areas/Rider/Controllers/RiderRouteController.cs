@@ -11,14 +11,16 @@ namespace Rolla.Areas.Rider.Controllers
     [Route("RiderRoute")]
     public class RiderRouteController : Controller
     {
+        private IGeoJsonService _geoJsonService;
         private IRRouteServices _rRouteServices;
         private readonly AppDbContext _context;
 
         // سازنده کلاس برای دریافت وابستگی به دیتابیس از طریق DI
-        public RiderRouteController(AppDbContext context , IRRouteServices rRouteServices)
+        public RiderRouteController(AppDbContext context , IRRouteServices rRouteServices , IGeoJsonService geoJsonService)
         {
             _context = context;
             _rRouteServices = rRouteServices;
+            _geoJsonService = geoJsonService;
         }
 
         // POST: RiderRoute/SaveCoordinates
@@ -45,6 +47,19 @@ namespace Rolla.Areas.Rider.Controllers
 
 
 
+        }
+        // GET: RiderRoute/GetMarkers
+        [HttpGet]
+        [Route("GetMarkers")]
+        public IActionResult GetMarkers()
+        {
+            var locations = _context.MapRouteDrivers
+                .Where(x => x.IsActive)
+                .ToList();
+
+            var geoJson = _geoJsonService.BuildGeoJsonFromEntitys(locations);
+
+            return Json(geoJson);
         }
 
 

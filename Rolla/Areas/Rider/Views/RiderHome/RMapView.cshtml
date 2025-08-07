@@ -95,6 +95,20 @@
         // ایجاد نقشه و تنظیم مرکز آن روی تهران با زوم ۱۳
         var map = L.map('map').setView([35.6892, 51.3890], 13);
 
+              
+        document.addEventListener('DOMContentLoaded', function () {
+          fetch('/RiderRoute/GetMarkers')
+            .then(response => response.json())
+            .then(data => {
+              L.geoJSON(data).addTo(map);
+            })
+            .catch(error => {
+              console.error('خطا در دریافت داده‌ها:', error);
+            });
+        });
+    
+
+
         // افزودن لایه کاشی OpenStreetMap به نقشه
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
