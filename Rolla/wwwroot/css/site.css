@@ -207,3 +207,62 @@ body {
         outline: none !important; /* Remove default browser outline on focus */
     }
 
+
+
+
+
+
+
+
+
+
+.white-container {
+    position: fixed;
+    bottom: 20px; /* به جای 0، مثلاً 20px یا هرچقدر که می‌خوای */
+    left: 0;
+    right: 0;
+    height: 150px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+.top-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.half-button {
+    flex: 1;
+    padding: 15px;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.half-button:hover {
+    background-color: #d0d0d0;
+}
+
+.full-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.full-button:hover {
+    background-color: #0056b3;
+}
+

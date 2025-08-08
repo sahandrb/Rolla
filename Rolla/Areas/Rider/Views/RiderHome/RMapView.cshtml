@@ -13,9 +13,11 @@
         /* تنظیم ابعاد و موقعیت نقشه */
         #map {
             position: absolute;
-            height: 500px;
-            width: 100%;
-            border-radius: 8px;
+            top: 0;
+            left: 0;
+            height: 80vh;
+            width: 100vw;
+            z-index: 1;
         }
     </style>
 
@@ -61,6 +63,26 @@
         .leaflet-control.maptiler-geocoder-control {
             z-index: 1000;
         }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute; /* یا fixed اگر می‌خوای */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
     </style>
 }
 
@@ -69,14 +91,22 @@
 -->
 <div id="map"></div>
 
-<!-- دکمه انتخاب مبدا -->
-<button onclick="selectedType='origin'" class="btn btn-outline-primary" id="btnOrigin">انتخاب مبدا</button>
 
-<!-- دکمه انتخاب مقصد -->
-<button onclick="selectedType='destination'" class="btn btn-outline-primary" id="btnDestination">انتخاب مقصد</button>
+<div class="white-container">
+    <div class="top-buttons">
+        <!-- دکمه انتخاب مبدا -->
+        <button onclick="selectedType='origin'" class="btn btn-outline-primary half-button" id="btnOrigin">انتخاب مبدا</button>
 
-<!-- دکمه ذخیره مسیر -->
-<button id="saveRouteBtn" class="btn btn-success">ذخیره مسیر</button>
+        <!-- دکمه انتخاب مقصد -->
+        <button onclick="selectedType='destination'" class="btn btn-outline-primary half-button" id="btnDestination">انتخاب مقصد</button>
+    </div>
+
+    <!-- دکمه ذخیره مسیر -->
+    <div class="bottom-button-wrapper">
+        <button id="saveRouteBtn" class="btn btn-success full-button">ذخیره مسیر</button>
+    </div>
+</div>
+
 
 
 
@@ -253,5 +283,8 @@
             btnOrigin.classList.remove('btn-primary');
             btnOrigin.classList.add('btn-outline-primary');
         });
+
+
+
     </script>
 }

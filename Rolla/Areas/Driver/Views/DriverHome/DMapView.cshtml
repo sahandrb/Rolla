@@ -1,40 +1,47 @@
 ﻿@{
-    // تعیین عنوان صفحه
-    ViewData["Title"] = "DMapView";
+    // تعیین عنوان صفحه که در تگ <title> یا بخش‌های دیگر استفاده می‌شود
+    ViewData["Title"] = "RiderMapView";
 
-    // استفاده از Layout اصلی سایت
+    // تعیین صفحه Layout اصلی که این ویو از آن استفاده می‌کند
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 @section Styles {
+
+
     <style>
-        /* استایل بخش نقشه با ارتفاع 450 پیکسل و پهنای کامل */
+        /* تنظیم ابعاد و موقعیت نقشه */
         #map {
             position: absolute;
-            height: 500px;
-            width: 100%;
-            border-radius: 8px;
+            top: 0;
+            left: 0;
+            height: 80vh;
+            width: 100vw;
+            z-index: 1;
         }
     </style>
 
-    <!-- بارگذاری CSS اصلی کتابخانه Leaflet -->
+    <!-- لینک استایل اصلی کتابخانه Leaflet برای نقشه -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-    <!-- CSS مربوط به کنترل موقعیت‌یابی (Locate Control) -->
+    <!-- استایل کنترل موقعیت‌یابی Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
 
-    <!-- CSS کنترل جستجوی جغرافیایی (Geocoding Control) -->
+    <!-- استایل کنترل جستجوی مکان MapTiler -->
     <link rel="stylesheet" href="https://cdn.maptiler.com/maptiler-geocoding-control/v2.1.7/style.css" />
 
+
+
     <style>
-        /* بالاتر بردن کنترل جستجو به بالای صفحه و وسط افقی */
+        /* تنظیم موقعیت کنترل جستجو در بالای نقشه و وسط صفحه */
         .leaflet-top.leaflet-right {
             top: 10px !important;
             right: 50%;
             transform: translateX(50%);
         }
 
-        /* افزایش اندازه و زیبایی input کنترل جستجو */
+        /* بزرگ کردن ورودی جستجو با فونت و padding مناسب */
         .maptiler-geocoder-control input {
             height: 48px;
             font-size: 18px;
@@ -44,131 +51,196 @@
             max-width: 90vw; /* حداکثر عرض 90 درصد عرض صفحه */
         }
 
-        /* اندازه و فونت لیست نتایج جستجو */
+        /* تنظیم اندازه لیست نتایج جستجو */
         .maptiler-geocoder-results {
             font-size: 16px;
             max-width: 400px;
         }
 
-        /* تغییر موقعیت نقشه به حالت نسبی برای سازگاری با کنترل‌ها */
+        /* تغییر موقعیت نقشه به relative برای جلوگیری از تداخل با کنترل‌ها */
         #map {
             position: relative;
         }
 
-        /* افزایش اولویت نمایش کنترل جستجو */
+        /* بالاترین لایه بودن کنترل جستجو */
         .leaflet-control.maptiler-geocoder-control {
             z-index: 1000;
         }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute; /* یا fixed اگر می‌خوای */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+
+
     </style>
 }
 
-<!-- عنصر اصلی نقشه -->
+<!--
+    بخش اصلی صفحه شامل نقشه و دکمه‌های انتخاب مبدا، مقصد و ذخیره مسیر
+-->
 <div id="map"></div>
 
-<!-- دکمه‌های انتخاب نوع نقطه (مبدا یا مقصد) -->
-<button onclick="selectedType='origin'" class="btn btn-outline-primary">انتخاب مبدا</button>
-<button onclick="selectedType='destination'" class="btn btn-outline-primary">انتخاب مقصد</button>
 
-<!-- دکمه ذخیره مسیر انتخاب‌شده -->
-<button id="saveRouteBtn" class="btn btn-success">ذخیره مسیر</button>
+<div class="white-container">
+    <div class="top-buttons">
+        <!-- دکمه انتخاب مبدا -->
+        <button onclick="selectedType='origin'" class="btn btn-outline-primary half-button" id="btnOrigin">انتخاب مبدا</button>
+
+        <!-- دکمه انتخاب مقصد -->
+        <button onclick="selectedType='destination'" class="btn btn-outline-primary half-button" id="btnDestination">انتخاب مقصد</button>
+    </div>
+
+    <!-- دکمه ذخیره مسیر -->
+    <div class="bottom-button-wrapper">
+        <button id="saveRouteBtn" class="btn btn-success full-button">ذخیره مسیر</button>
+    </div>
+</div>
+
+
+
+
 
 @section Scripts {
-    <!-- بارگذاری اسکریپت اصلی Leaflet -->
+    <!-- اسکریپت اصلی کتابخانه Leaflet برای نقشه -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
 
-    <!-- بارگذاری کنترل جستجوی Maptiler -->
+    <!-- اسکریپت کنترل جستجوی مکان MapTiler -->
     <script src="https://cdn.maptiler.com/maptiler-geocoding-control/v2.1.7/leaflet.umd.js"></script>
 
     <script>
-        // کلید API سرویس MapTiler برای استفاده از کنترل جستجو و نقشه
+        // کلید API برای MapTiler
         const key = 'JSyPtYpf23JvoxuW2qcO';
 
-        // ایجاد نقشه Leaflet با مرکزیت روی تهران و زوم 13 (نمای شهری)
+        // ایجاد نقشه و تنظیم مرکز آن روی تهران با زوم ۱۳
         var map = L.map('map').setView([35.6892, 51.3890], 13);
 
-        // افزودن لایه کاشی‌های OpenStreetMap به نقشه
+
+      
+
+        // افزودن لایه کاشی OpenStreetMap به نقشه
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19, // حداکثر زوم مجاز
+            maxZoom: 19,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // اضافه کردن کنترل جستجوی مکانی Maptiler با تنظیمات مشخص
+        let markers = [];
+
+        function getIcon(zoom) {
+          let size = zoom * 3; // سایز آیکون بر اساس زوم
+          return L.icon({
+            iconUrl: '/wallpaper/101-1015767_map-marker-circle-png.png',
+            iconSize: [size, size],
+            iconAnchor: [size / 2, size],
+            popupAnchor: [0, -size]
+          });
+        }
+
+        // مقداردهی اولیه آیکون بر اساس زوم فعلی
+        let currentZoom = map.getZoom();
+
+        fetch('/RiderRoute/GetMarkers')
+          .then(response => response.json())
+          .then(data => {
+            L.geoJSON(data, {
+              pointToLayer: function (feature, latlng) {
+                let marker = L.marker(latlng, {
+                  icon: getIcon(currentZoom)
+                });
+                markers.push(marker);
+                return marker;
+              }
+            }).addTo(map);
+          });
+
+        // واکنش به تغییر زوم و بروزرسانی آیکون‌ها
+        map.on('zoomend', () => {
+          let zoom = map.getZoom();
+          let icon = getIcon(zoom);
+          markers.forEach(marker => marker.setIcon(icon));
+        });
+
+
+
+
+
+
+        // افزودن کنترل جستجو MapTiler به نقشه
         L.control.maptilerGeocoding({
-            apiKey: key,        // کلید API
-            position: 'topright', // جایگاه کنترل روی نقشه
-            collapsed: false,   // کنترل به صورت باز نمایش داده شود
-            flyToSelected: false, // عدم زوم خودکار به محل انتخاب شده
-            limit: 5            // حداکثر تعداد نتایج جستجو
+            apiKey: key,
+            position: 'topright',
+            collapsed: false, // کنترل باز باشد
+            flyToSelected: false, // حرکت خودکار به موقعیت انتخاب‌شده فعال نباشد
+            limit: 5 // محدودیت تعداد نتایج جستجو
         }).addTo(map);
 
-        // متغیری برای نگهداری مارکر انتخاب‌شده روی نقشه
-        var selectedMarker = null;
+        // متغیر ذخیره نشانگر انتخاب شده (مبدا یا مقصد)
+        let selectedMarker = null;
 
-        // رویداد کلیک روی نقشه:
-        // ایجاد یا جابجایی مارکر به نقطه کلیک‌شده
-        map.on('click', function(e) {
-            var latlng = e.latlng;
-
-            // اگر قبلاً مارکری وجود داشت، حذف شود تا فقط یک مارکر فعال باشد
-            if (selectedMarker) {
-                map.removeLayer(selectedMarker);
-            }
-
-            // ایجاد مارکر جدید روی مختصات کلیک شده
-            selectedMarker = L.marker(latlng).addTo(map)
-                .bindPopup("مکان انتخاب‌شده: <br>Lat: " + latlng.lat.toFixed(6) + "<br>Lng: " + latlng.lng.toFixed(6))
-                .openPopup();
-
-            // برای تست و دیباگ، مختصات انتخاب شده در کنسول نمایش داده می‌شود
-            console.log("مختصات انتخاب‌شده:", latlng.lat, latlng.lng);
-
-            // در صورت نیاز، می‌توان مختصات را به فرم یا فیلدهای مخفی منتقل کرد
-            // document.getElementById('LatitudeInput').value = latlng.lat;
-            // document.getElementById('LongitudeInput').value = latlng.lng;
-        });
-    </script>
-
-    <script>
-        // نگهداری مختصات و مارکرهای مبدا و مقصد
+        // تعریف متغیرها برای ذخیره مختصات مبدا و مقصد
         let originLatLng = null;
         let destinationLatLng = null;
-        let selectedType = 'origin'; // نوع انتخاب شده (مبدا یا مقصد) پیش‌فرض مبدا است
 
+        // نشانگرهای مبدا و مقصد روی نقشه
         let originMarker = null;
         let destinationMarker = null;
 
-        // گوش دادن به کلیک روی نقشه برای ثبت مختصات مبدا یا مقصد
+        // نوع انتخاب جاری: 'origin' یا 'destination'
+        let selectedType = 'origin';
+
+        // هنگام کلیک روی نقشه، بسته به نوع انتخاب، نشانگر مبدا یا مقصد اضافه یا جایگزین می‌شود
         map.on('click', function (e) {
             const latlng = e.latlng;
 
             if (selectedType === 'origin') {
-                originLatLng = latlng;  // ذخیره مختصات مبدا
-                if (originMarker) map.removeLayer(originMarker); // حذف مارکر قبلی اگر وجود داشت
+                // ذخیره مختصات مبدا
+                originLatLng = latlng;
+                // حذف نشانگر قبلی مبدا (اگر وجود دارد)
+                if (originMarker) map.removeLayer(originMarker);
+                // افزودن نشانگر جدید مبدا
                 originMarker = L.marker(latlng).addTo(map).bindPopup("مبدا").openPopup();
             } else {
-                destinationLatLng = latlng;  // ذخیره مختصات مقصد
-                if (destinationMarker) map.removeLayer(destinationMarker); // حذف مارکر قبلی
+                // ذخیره مختصات مقصد
+                destinationLatLng = latlng;
+                // حذف نشانگر قبلی مقصد (اگر وجود دارد)
+                if (destinationMarker) map.removeLayer(destinationMarker);
+                // افزودن نشانگر جدید مقصد
                 destinationMarker = L.marker(latlng).addTo(map).bindPopup("مقصد").openPopup();
             }
         });
 
-        // فعال کردن موقعیت‌یابی خودکار کاربر و تنظیم نقشه روی موقعیت آن
+        // فعال‌سازی موقعیت‌یابی خودکار مرورگر و تنظیم نمای نقشه روی موقعیت کاربر
         map.locate({
-            setView: true,       // زوم و مرکز نقشه روی موقعیت کاربر تنظیم شود
-            maxZoom: 16,         // حداکثر زوم برای موقعیت‌یابی
-            timeout: 20000,      // زمان انتظار برای دریافت موقعیت (20 ثانیه)
-            watch: false,        // فقط یک بار موقعیت‌یابی شود
-            enableHighAccuracy: true  // استفاده از موقعیت دقیق GPS اگر امکان‌پذیر باشد
+            setView: true,
+            maxZoom: 16,
+            timeout: 20000,
+            watch: false,
+            enableHighAccuracy: true
         });
 
-        // هندل کردن خطا در صورت عدم امکان موقعیت‌یابی
+        // در صورت بروز خطا در موقعیت‌یابی، نمایش پیام هشدار
         map.on('locationerror', function(e) {
             alert("موقعیت‌یابی امکان‌پذیر نیست: " + e.message);
         });
 
-        // رویداد کلیک روی دکمه ذخیره مسیر
+        // رویداد کلیک دکمه ذخیره مسیر
         document.getElementById("saveRouteBtn").addEventListener("click", function () {
             // بررسی اینکه هر دو نقطه مبدا و مقصد انتخاب شده باشند
             if (!originLatLng || !destinationLatLng) {
@@ -176,8 +248,8 @@
                 return;
             }
 
-            // ارسال داده‌ها به سرور با متد POST به مسیر مشخص شده
-            fetch('/Route/SaveCoordinates', {
+            // ارسال درخواست POST به سرور برای ذخیره مختصات
+            fetch('/Route/SaveCoordinates', {  // تغییر مسیر به Route و اکشن SaveCoordinates
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -185,23 +257,21 @@
                     destination: { lat: destinationLatLng.lat, lng: destinationLatLng.lng }
                 })
             })
-            // پاسخ را بررسی می‌کند و پیام موفقیت یا خطا نمایش می‌دهد
             .then(res => res.ok ? alert("با موفقیت ذخیره شد.") : alert("خطا در ذخیره!"));
         });
-    </script>
 
-    <script>
-        // متغیر برای نگهداری نوع انتخاب شده در دکمه‌ها (مبدا یا مقصد)
-        let selectedType = null;
 
-        // دریافت عناصر دکمه‌ها از DOM
+
+
+
+
+        // دسترسی به دکمه‌های انتخاب مبدا و مقصد
         const btnOrigin = document.getElementById('btnOrigin');
         const btnDestination = document.getElementById('btnDestination');
 
-        // اضافه کردن رویداد کلیک روی دکمه انتخاب مبدا
+        // وقتی دکمه مبدا کلیک می‌شود، حالت انتخاب روی 'origin' می‌رود و استایل دکمه‌ها تنظیم می‌شود
         btnOrigin.addEventListener('click', function() {
-            selectedType = 'origin'; // انتخاب مبدا
-            // تغییر کلاس‌های CSS برای نمایش وضعیت انتخاب شده
+            selectedType = 'origin';
             btnOrigin.classList.add('btn-primary');
             btnOrigin.classList.remove('btn-outline-primary');
 
@@ -209,16 +279,17 @@
             btnDestination.classList.add('btn-outline-primary');
         });
 
-        // اضافه کردن رویداد کلیک روی دکمه انتخاب مقصد
+        // وقتی دکمه مقصد کلیک می‌شود، حالت انتخاب روی 'destination' می‌رود و استایل دکمه‌ها تنظیم می‌شود
         btnDestination.addEventListener('click', function() {
-            selectedType = 'destination'; // انتخاب مقصد
-            // تغییر کلاس‌های CSS برای نمایش وضعیت انتخاب شده
+            selectedType = 'destination';
             btnDestination.classList.add('btn-primary');
             btnDestination.classList.remove('btn-outline-primary');
 
             btnOrigin.classList.remove('btn-primary');
             btnOrigin.classList.add('btn-outline-primary');
         });
-    </script>
 
+
+
+    </script>
 }
