@@ -6,7 +6,7 @@ namespace Rolla.Services
     {
         public object BuildGeoJsonFromEntitys(IEnumerable<MapRouteDriver> locations)
         {
-            var features = locations.Select(l => new GeoJsonFeature
+            var Features = locations.Select(l => new GeoJsonFeature
             {
                 geometry = new Geometry
                 {
@@ -22,7 +22,7 @@ namespace Rolla.Services
             return new
             {
                 Type = "FeatureCollection",
-                Features = features 
+                Features = Features 
             };
 
 

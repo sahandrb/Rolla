@@ -6,12 +6,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 @section Styles {
+
     <style>
         /* تنظیم ابعاد و موقعیت نقشه */
         #map {
             position: absolute;
-            height: 450px;
+            height: 500px;
             width: 100%;
             border-radius: 8px;
         }
@@ -95,25 +97,55 @@
         // ایجاد نقشه و تنظیم مرکز آن روی تهران با زوم ۱۳
         var map = L.map('map').setView([35.6892, 51.3890], 13);
 
-              
-        document.addEventListener('DOMContentLoaded', function () {
-          fetch('/RiderRoute/GetMarkers')
-            .then(response => response.json())
-            .then(data => {
-              L.geoJSON(data).addTo(map);
-            })
-            .catch(error => {
-              console.error('خطا در دریافت داده‌ها:', error);
-            });
-        });
-    
 
+      
 
         // افزودن لایه کاشی OpenStreetMap به نقشه
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
+
+        let markers = [];
+
+        function getIcon(zoom) {
+          let size = zoom * 3; // سایز آیکون بر اساس زوم
+          return L.icon({
+            iconUrl: '/wallpaper/101-1015767_map-marker-circle-png.png',
+            iconSize: [size, size],
+            iconAnchor: [size / 2, size],
+            popupAnchor: [0, -size]
+          });
+        }
+
+        // مقداردهی اولیه آیکون بر اساس زوم فعلی
+        let currentZoom = map.getZoom();
+
+        fetch('/RiderRoute/GetMarkers')
+          .then(response => response.json())
+          .then(data => {
+            L.geoJSON(data, {
+              pointToLayer: function (feature, latlng) {
+                let marker = L.marker(latlng, {
+                  icon: getIcon(currentZoom)
+                });
+                markers.push(marker);
+                return marker;
+              }
+            }).addTo(map);
+          });
+
+        // واکنش به تغییر زوم و بروزرسانی آیکون‌ها
+        map.on('zoomend', () => {
+          let zoom = map.getZoom();
+          let icon = getIcon(zoom);
+          markers.forEach(marker => marker.setIcon(icon));
+        });
+
+
+
+
+
 
         // افزودن کنترل جستجو MapTiler به نقشه
         L.control.maptilerGeocoding({

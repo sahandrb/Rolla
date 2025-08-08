@@ -2,7 +2,7 @@
 {
     public class GeoJsonFeature
     {
-        public String Type => "feature";
+        public String Type => "Feature";
 
         public Geometry geometry { get; set; } = new Geometry();
 
