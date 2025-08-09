@@ -9,7 +9,6 @@
 
 @section Styles {
 
-
     <style>
         /* تنظیم ابعاد و موقعیت نقشه */
         #map {
@@ -30,8 +29,6 @@
 
     <!-- استایل کنترل جستجوی مکان MapTiler -->
     <link rel="stylesheet" href="https://cdn.maptiler.com/maptiler-geocoding-control/v2.1.7/style.css" />
-
-
 
     <style>
         /* تنظیم موقعیت کنترل جستجو در بالای نقشه و وسط صفحه */
@@ -86,8 +83,6 @@
             box-sizing: border-box;
         }
 
-
-
     </style>
 }
 
@@ -133,7 +128,7 @@
         var map = L.map('map').setView([35.6892, 51.3890], 13);
 
 
-      
+
 
         // افزودن لایه کاشی OpenStreetMap به نقشه
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -249,7 +244,7 @@
             }
 
             // ارسال درخواست POST به سرور برای ذخیره مختصات
-            fetch('/Route/SaveCoordinates', {  // تغییر مسیر به Route و اکشن SaveCoordinates
+            fetch('/Route/SaveCoordinates', {  // تغییر مسیر به RiderRoute و اکشن SaveCoordinates
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
