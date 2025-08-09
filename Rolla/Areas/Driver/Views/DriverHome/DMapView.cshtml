@@ -107,7 +107,21 @@
     </div>
 </div>
 
-
+<div id="notification" style="
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: snow; /* نارنجی رنگ */
+    color: mediumblue;
+    padding: 15px 25px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    display: none; /* ابتدا مخفی است */
+    z-index: 10000;
+    font-weight: 700;  /* اینجا تغییر دادم */
+">
+    لطفاً ابتدا مبدا را انتخاب کرده، سپس مقصد را مشخص نموده و در نهایت دکمه تأیید را فشار دهید.
+</div>
 
 
 
@@ -235,7 +249,12 @@
             alert("موقعیت‌یابی امکان‌پذیر نیست: " + e.message);
         });
 
-        // رویداد کلیک دکمه ذخیره مسیر
+
+
+
+
+
+
         document.getElementById("saveRouteBtn").addEventListener("click", function () {
             // بررسی اینکه هر دو نقطه مبدا و مقصد انتخاب شده باشند
             if (!originLatLng || !destinationLatLng) {
@@ -252,7 +271,17 @@
                     destination: { lat: destinationLatLng.lat, lng: destinationLatLng.lng }
                 })
             })
-            .then(res => res.ok ? alert("با موفقیت ذخیره شد.") : alert("خطا در ذخیره!"));
+            .then(res => {
+                if (res.ok) {
+
+                    window.location.href = "/Rider/RiderSearch/SearchMethod";
+                } else {
+                    alert("خطا در ذخیره!");
+                }
+            })
+            .catch(err => {
+                console.error("خطا:", err);
+            });
         });
 
 
@@ -282,6 +311,18 @@
 
             btnOrigin.classList.remove('btn-primary');
             btnOrigin.classList.add('btn-outline-primary');
+        });
+
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const notification = document.getElementById('notification');
+                notification.style.display = 'block';
+
+                // نوتیف بعد از ۱۰ ثانیه محو شود
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 6000);
+            }, 3000);  // تاخیر ۳ ثانیه قبل از نمایش نوتیف
         });
 
 
