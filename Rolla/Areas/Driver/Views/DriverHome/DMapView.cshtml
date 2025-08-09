@@ -1,6 +1,6 @@
 ﻿@{
     // تعیین عنوان صفحه که در تگ <title> یا بخش‌های دیگر استفاده می‌شود
-    ViewData["Title"] = "RiderMapView";
+    ViewData["Title"] = "DriverMapView";
 
     // تعیین صفحه Layout اصلی که این ویو از آن استفاده می‌کند
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -83,6 +83,10 @@
             box-sizing: border-box;
         }
 
+        #resultNotification {
+            transition: opacity 0.5s ease;
+        }
+
     </style>
 }
 
@@ -103,9 +107,29 @@
 
     <!-- دکمه ذخیره مسیر -->
     <div class="bottom-button-wrapper">
-        <button id="saveRouteBtn" class="btn btn-success full-button">ذخیره مسیر</button>
+        <button id="saveRouteBtn" class="btn btn-success full-button">تایید</button>
     </div>
 </div>
+
+
+<div id="resultNotification" style="
+    display:none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: white;
+    color: black;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    font-size: 16px;
+    z-index: 9999;
+    min-width: 250px;
+">
+    <strong>نتیجه محاسبه</strong>
+    <div id="resultContent"></div>
+</div>
+
 
 <div id="notification" style="
     position: fixed;
@@ -123,28 +147,46 @@
     لطفاً ابتدا مبدا را انتخاب کرده، سپس مقصد را مشخص نموده و در نهایت دکمه تأیید را فشار دهید.
 </div>
 
+<!-- Modal نمایش قیمت و مسافت -->
+<div class="modal fade" id="routeInfoModal" tabindex="-1" aria-labelledby="routeInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <!-- وسط صفحه -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="routeInfoModalLabel">جزئیات مسیر</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>فاصله:</strong> <span id="modalDistance"></span> متر</p>
+                <p><strong>هزینه:</strong> <span id="modalCost"></span> تومان</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="confirmRouteBtn" class="btn btn-success">تأیید و ادامه</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 @section Scripts {
-    <!-- اسکریپت اصلی کتابخانه Leaflet برای نقشه -->
+    <!-- کتابخانه Leaflet -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
 
-    <!-- اسکریپت کنترل جستجوی مکان MapTiler -->
+    <!-- کنترل موقعیت‌یابی Leaflet.locatecontrol -->
+    <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
+
+    <!-- کنترل جستجوی MapTiler -->
     <script src="https://cdn.maptiler.com/maptiler-geocoding-control/v2.1.7/leaflet.umd.js"></script>
 
     <script>
-        // کلید API برای MapTiler
         const key = 'JSyPtYpf23JvoxuW2qcO';
 
-        // ایجاد نقشه و تنظیم مرکز آن روی تهران با زوم ۱۳
         var map = L.map('map').setView([35.6892, 51.3890], 13);
 
-
-
-
-        // افزودن لایه کاشی OpenStreetMap به نقشه
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -153,7 +195,7 @@
         let markers = [];
 
         function getIcon(zoom) {
-          let size = zoom * 3; // سایز آیکون بر اساس زوم
+          let size = zoom * 3;
           return L.icon({
             iconUrl: '/wallpaper/101-1015767_map-marker-circle-png.png',
             iconSize: [size, size],
@@ -162,10 +204,9 @@
           });
         }
 
-        // مقداردهی اولیه آیکون بر اساس زوم فعلی
         let currentZoom = map.getZoom();
 
-        fetch('/RiderRoute/GetMarkers')
+        fetch('/Route/GetMarkers')
           .then(response => response.json())
           .then(data => {
             L.geoJSON(data, {
@@ -179,63 +220,52 @@
             }).addTo(map);
           });
 
-        // واکنش به تغییر زوم و بروزرسانی آیکون‌ها
         map.on('zoomend', () => {
           let zoom = map.getZoom();
           let icon = getIcon(zoom);
           markers.forEach(marker => marker.setIcon(icon));
         });
 
+        // اضافه کردن کنترل موقعیت‌یابی
+        L.control.locate({
+            position: 'topleft',
+            flyTo: true,
+            showPopup: false,
+            strings: {
+                title: "موقعیت من"
+            }
+        }).addTo(map);
 
-
-
-
-
-        // افزودن کنترل جستجو MapTiler به نقشه
+        // کنترل جستجوی MapTiler
         L.control.maptilerGeocoding({
             apiKey: key,
             position: 'topright',
-            collapsed: false, // کنترل باز باشد
-            flyToSelected: false, // حرکت خودکار به موقعیت انتخاب‌شده فعال نباشد
-            limit: 5 // محدودیت تعداد نتایج جستجو
+            collapsed: false,
+            flyToSelected: false,
+            limit: 5
         }).addTo(map);
 
-        // متغیر ذخیره نشانگر انتخاب شده (مبدا یا مقصد)
         let selectedMarker = null;
-
-        // تعریف متغیرها برای ذخیره مختصات مبدا و مقصد
         let originLatLng = null;
         let destinationLatLng = null;
-
-        // نشانگرهای مبدا و مقصد روی نقشه
         let originMarker = null;
         let destinationMarker = null;
-
-        // نوع انتخاب جاری: 'origin' یا 'destination'
         let selectedType = 'origin';
 
-        // هنگام کلیک روی نقشه، بسته به نوع انتخاب، نشانگر مبدا یا مقصد اضافه یا جایگزین می‌شود
         map.on('click', function (e) {
             const latlng = e.latlng;
 
             if (selectedType === 'origin') {
-                // ذخیره مختصات مبدا
                 originLatLng = latlng;
-                // حذف نشانگر قبلی مبدا (اگر وجود دارد)
                 if (originMarker) map.removeLayer(originMarker);
-                // افزودن نشانگر جدید مبدا
                 originMarker = L.marker(latlng).addTo(map).bindPopup("مبدا").openPopup();
             } else {
-                // ذخیره مختصات مقصد
                 destinationLatLng = latlng;
-                // حذف نشانگر قبلی مقصد (اگر وجود دارد)
                 if (destinationMarker) map.removeLayer(destinationMarker);
-                // افزودن نشانگر جدید مقصد
                 destinationMarker = L.marker(latlng).addTo(map).bindPopup("مقصد").openPopup();
             }
         });
 
-        // فعال‌سازی موقعیت‌یابی خودکار مرورگر و تنظیم نمای نقشه روی موقعیت کاربر
         map.locate({
             setView: true,
             maxZoom: 16,
@@ -244,71 +274,81 @@
             enableHighAccuracy: true
         });
 
-        // در صورت بروز خطا در موقعیت‌یابی، نمایش پیام هشدار
         map.on('locationerror', function(e) {
             alert("موقعیت‌یابی امکان‌پذیر نیست: " + e.message);
         });
 
-
-
-
-
-
-
         document.getElementById("saveRouteBtn").addEventListener("click", function () {
-            // بررسی اینکه هر دو نقطه مبدا و مقصد انتخاب شده باشند
             if (!originLatLng || !destinationLatLng) {
                 alert("هر دو نقطه مبدا و مقصد را مشخص کنید.");
                 return;
             }
 
-            // ارسال درخواست POST به سرور برای ذخیره مختصات
-            fetch('/Route/SaveCoordinates', {  // تغییر مسیر به RiderRoute و اکشن SaveCoordinates
+            // ابتدا فاصله و هزینه رو بگیریم
+            fetch('/Driver/DriverSearch/AcceptMethod', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    origin: { lat: originLatLng.lat, lng: originLatLng.lng },
-                    destination: { lat: destinationLatLng.lat, lng: destinationLatLng.lng }
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    originLat: originLatLng.lat,
+                    originLon: originLatLng.lng,
+                    destLat: destinationLatLng.lat,
+                    destLon: destinationLatLng.lng
                 })
             })
-            .then(res => {
-                if (res.ok) {
-
-                    window.location.href = "/Rider/RiderSearch/SearchMethod";
-                } else {
-                    alert("خطا در ذخیره!");
+            .then(res => res.json())
+            .then(data => {
+                if (!data || typeof data.distanceMeters !== 'number') {
+                    throw new Error("مقدار فاصله دریافت نشده یا نامعتبر است.");
                 }
+
+                // مقدارها رو تو span های مودال می‌ذاریم
+                document.getElementById('modalDistance').textContent = data.distanceMeters.toFixed(2);
+                document.getElementById('modalCost').textContent = data.cost.toLocaleString();
+
+                // نمایش مودال
+                const routeModal = new bootstrap.Modal(document.getElementById('routeInfoModal'));
+                routeModal.show();
+
+                // وقتی روی تایید مودال کلیک شد، مختصات ذخیره میشن
+                document.getElementById('confirmRouteBtn').onclick = function () {
+                    fetch('/Route/SaveCoordinates', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            origin: { lat: originLatLng.lat, lng: originLatLng.lng },
+                            destination: { lat: destinationLatLng.lat, lng: destinationLatLng.lng }
+                        })
+                    })
+                    .then(res => {
+                        if (!res.ok) throw new Error("خطا در ذخیره مختصات!");
+                        routeModal.hide();
+                        window.location.href = "/Driver/DriverSearch/SearchMethod";
+                    })
+                    .catch(err => alert(err.message || "خطا در ذخیره مسیر!"));
+                };
             })
             .catch(err => {
                 console.error("خطا:", err);
+                alert(err.message || "مشکلی پیش آمد!");
             });
         });
 
 
-
-
-
-
-        // دسترسی به دکمه‌های انتخاب مبدا و مقصد
         const btnOrigin = document.getElementById('btnOrigin');
         const btnDestination = document.getElementById('btnDestination');
 
-        // وقتی دکمه مبدا کلیک می‌شود، حالت انتخاب روی 'origin' می‌رود و استایل دکمه‌ها تنظیم می‌شود
         btnOrigin.addEventListener('click', function() {
             selectedType = 'origin';
             btnOrigin.classList.add('btn-primary');
             btnOrigin.classList.remove('btn-outline-primary');
-
             btnDestination.classList.remove('btn-primary');
             btnDestination.classList.add('btn-outline-primary');
         });
 
-        // وقتی دکمه مقصد کلیک می‌شود، حالت انتخاب روی 'destination' می‌رود و استایل دکمه‌ها تنظیم می‌شود
         btnDestination.addEventListener('click', function() {
             selectedType = 'destination';
             btnDestination.classList.add('btn-primary');
             btnDestination.classList.remove('btn-outline-primary');
-
             btnOrigin.classList.remove('btn-primary');
             btnOrigin.classList.add('btn-outline-primary');
         });
@@ -317,15 +357,11 @@
             setTimeout(() => {
                 const notification = document.getElementById('notification');
                 notification.style.display = 'block';
-
-                // نوتیف بعد از ۱۰ ثانیه محو شود
                 setTimeout(() => {
                     notification.style.display = 'none';
                 }, 6000);
-            }, 3000);  // تاخیر ۳ ثانیه قبل از نمایش نوتیف
+            }, 3000);
         });
-
-
 
     </script>
 }
