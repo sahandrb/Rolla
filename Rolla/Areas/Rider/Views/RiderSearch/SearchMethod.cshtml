@@ -1,8 +1,84 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "SearchMethod";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
+@section Styles
+{
+    <style>
+        #loader {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .loader-text {
+            font-family: 'Lobster', cursive;
+            font-size: 28px;
+            color: #69DB;
+            margin-bottom: 15px;
+            animation: bounceText 3s ease-in-out infinite;
+            text-shadow: none;
+            
+        }
+
+        @@keyframes bounceText {
+            0%, 100%
+
+        {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-3px);
+        }
+
+        }
 
 
+
+        @@keyframes animate {
+            17% {
+                border-bottom-right-radius: 3px;
+            }
+
+            25% {
+                transform: translateY(9px) rotate(22.5deg);
+            }
+
+            50% {
+                transform: translateY(18px) scale(1,.9) rotate(45deg);
+                border-bottom-right-radius: 40px;
+            }
+
+            75% {
+                transform: translateY(3px) rotate(67.5deg);
+            }
+
+            100% {
+                transform: translateY(0) rotate(90deg);
+            }
+        }
+
+
+        @@keyframes shadow {
+            50% {
+                transform: scale(1.2,1);
+            }
+        }
+
+        body {
+            background: #69DB;
+            overflow: hidden;
+        }
+    </style>
+}
+
+<div id="loader">
+    <div class="loader-text">در حال جست‌وجوی راننده مناسب برای شما هستیم</div>
+   
+</div>
