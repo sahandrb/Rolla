@@ -286,55 +286,55 @@
                 return;
             }
 
-            fetch('/RiderRoute/SaveCoordinates', {
+            // ابتدا فاصله و هزینه رو بگیریم
+            fetch('/Rider/RiderSearch/AcceptMethod', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    origin: { lat: originLatLng.lat, lng: originLatLng.lng },
-                    destination: { lat: destinationLatLng.lat, lng: destinationLatLng.lng }
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    originLat: originLatLng.lat,
+                    originLon: originLatLng.lng,
+                    destLat: destinationLatLng.lat,
+                    destLon: destinationLatLng.lng
                 })
-            })
-            .then(res => {
-                if (!res.ok) throw new Error("خطا در ذخیره مختصات!");
-                return fetch('/Rider/RiderSearch/AcceptMethod', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams({
-                        originLat: originLatLng.lat,
-                        originLon: originLatLng.lng,
-                        destLat: destinationLatLng.lat,
-                        destLon: destinationLatLng.lng
-                    })
-                });
             })
             .then(res => res.json())
             .then(data => {
-                console.log("داده برگشتی:", data);
-
                 if (!data || typeof data.distanceMeters !== 'number') {
                     throw new Error("مقدار فاصله دریافت نشده یا نامعتبر است.");
                 }
 
-        // مقدارها رو تو span های مودال می‌ذاریم
-        document.getElementById('modalDistance').textContent = data.distanceMeters.toFixed(2);
-        document.getElementById('modalCost').textContent = data.cost.toLocaleString();
+                // مقدارها رو تو span های مودال می‌ذاریم
+                document.getElementById('modalDistance').textContent = data.distanceMeters.toFixed(2);
+                document.getElementById('modalCost').textContent = data.cost.toLocaleString();
 
-        // نمایش مودال
-        const routeModal = new bootstrap.Modal(document.getElementById('routeInfoModal'));
-        routeModal.show();
+                // نمایش مودال
+                const routeModal = new bootstrap.Modal(document.getElementById('routeInfoModal'));
+                routeModal.show();
 
-        // رویداد کلیک روی دکمه تایید
-        document.getElementById('confirmRouteBtn').onclick = function () {
-            routeModal.hide();
-            window.location.href = "/Rider/RiderSearch/SearchMethod";
-        };
-
+                // وقتی روی تایید مودال کلیک شد، مختصات ذخیره میشن
+                document.getElementById('confirmRouteBtn').onclick = function () {
+                    fetch('/RiderRoute/SaveCoordinates', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            origin: { lat: originLatLng.lat, lng: originLatLng.lng },
+                            destination: { lat: destinationLatLng.lat, lng: destinationLatLng.lng }
+                        })
+                    })
+                    .then(res => {
+                        if (!res.ok) throw new Error("خطا در ذخیره مختصات!");
+                        routeModal.hide();
+                        window.location.href = "/Rider/RiderSearch/SearchMethod";
+                    })
+                    .catch(err => alert(err.message || "خطا در ذخیره مسیر!"));
+                };
             })
             .catch(err => {
                 console.error("خطا:", err);
                 alert(err.message || "مشکلی پیش آمد!");
             });
         });
+
 
         const btnOrigin = document.getElementById('btnOrigin');
         const btnDestination = document.getElementById('btnDestination');
