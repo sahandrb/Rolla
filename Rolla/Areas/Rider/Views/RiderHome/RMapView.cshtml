@@ -149,6 +149,27 @@
     لطفاً ابتدا مبدا را انتخاب کرده، سپس مقصد را مشخص نموده و در نهایت دکمه تأیید را فشار دهید.
 </div>
 
+<!-- Modal نمایش قیمت و مسافت -->
+<div class="modal fade" id="routeInfoModal" tabindex="-1" aria-labelledby="routeInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <!-- وسط صفحه -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="routeInfoModalLabel">جزئیات مسیر</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>فاصله:</strong> <span id="modalDistance"></span> متر</p>
+                <p><strong>هزینه:</strong> <span id="modalCost"></span> تومان</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="confirmRouteBtn" class="btn btn-success">تأیید و ادامه</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 @section Scripts {
@@ -294,22 +315,20 @@
                     throw new Error("مقدار فاصله دریافت نشده یا نامعتبر است.");
                 }
 
-                let notification = document.getElementById("resultNotification");
-                let resultContent = document.getElementById("resultContent");
-                resultContent.innerHTML =
-                    `فاصله: ${data.distanceMeters.toFixed(2)} متر<br>` +
-                    `هزینه: ${data.cost.toLocaleString()} تومان`;
+        // مقدارها رو تو span های مودال می‌ذاریم
+        document.getElementById('modalDistance').textContent = data.distanceMeters.toFixed(2);
+        document.getElementById('modalCost').textContent = data.cost.toLocaleString();
 
-                notification.style.display = "block";
-                notification.style.opacity = "1";
+        // نمایش مودال
+        const routeModal = new bootstrap.Modal(document.getElementById('routeInfoModal'));
+        routeModal.show();
 
-                setTimeout(() => {
-                    notification.style.opacity = "0";
-                    setTimeout(() => {
-                        notification.style.display = "none";
-                        window.location.href = "/Rider/RiderSearch/SearchMethod";
-                    }, 500);
-                }, 4000);
+        // رویداد کلیک روی دکمه تایید
+        document.getElementById('confirmRouteBtn').onclick = function () {
+            routeModal.hide();
+            window.location.href = "/Rider/RiderSearch/SearchMethod";
+        };
+
             })
             .catch(err => {
                 console.error("خطا:", err);
