@@ -1,58 +1,46 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- لینک به فایل CSS اصلی Leaflet برای استایل نقشه -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Rolla</title>
+
+    <!-- CSS اصلی Leaflet -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
           crossorigin="" />
 
-    <!-- بارگذاری کتابخانه‌های jQuery برای آسان‌سازی کار با DOM و اعتبارسنجی فرم -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <!-- CSS پلاگین LocateControl -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
 
-    <!-- تنظیمات اولیه صفحه -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- عنوان صفحه که از ViewData در ASP.NET MVC خوانده می‌شود -->
-    <title>@ViewData["Title"] - Rolla</title>
-
-    <!-- Import map placeholder (در اینجا خالی است، می‌تواند برای ماژول‌های جاوااسکریپت باشد) -->
-    <script type="importmap"></script>
-
-    <!-- لینک به فایل‌های CSS شخصی و بوت‌استرپ -->
+    <!-- CSS پروژه -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Rolla.styles.css" asp-append-version="true" />
 
-    <!-- این بخش مربوط به استایل‌های اضافه شده در بخش‌های دیگر صفحه است -->
     @RenderSection("Styles", required: false)
 
-    <!-- استایل و اسکریپت مربوط به کنترل موقعیت‌یابی در Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
-    <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
+    <!-- jQuery و اعتبارسنجی -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 </head>
 <body class="animated-bg">
     <header>
-        <!-- نوار ناوبری اصلی با استفاده از بوت‌استرپ -->
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <!-- لینک برند به صفحه اصلی -->
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Rolla</a>
-                <!-- دکمه منوی همبرگری برای نمایش در موبایل -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <!-- منوی اصلی شامل لینک‌ها -->
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <!-- لینک صفحه اصلی -->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <!-- لینک صفحه حریم خصوصی -->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
@@ -62,34 +50,33 @@
         </nav>
     </header>
 
-    <!-- محتوای اصلی صفحه -->
-
     <div class="container-fluid">
         <main role="main" class="pb-3">
-            @RenderBody() <!-- اینجا محتوای اصلی هر صفحه رندر می‌شود -->
+            @RenderBody()
         </main>
     </div>
 
-    <!-- فوتر صفحه -->
     <footer class="border-top footer text-muted">
-
     </footer>
 
-    <!-- بارگذاری اسکریپت‌های لازم در انتهای صفحه برای افزایش سرعت لود -->
-    <script src="~/lib/jquery/dist/jquery.min.js"></script> <!-- نسخه محلی jQuery -->
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> <!-- بسته کامل بوت‌استرپ شامل Popper.js -->
-    <script src="~/js/site.js" asp-append-version="true"></script> <!-- اسکریپت‌های اختصاصی سایت -->
-    <!-- بخش اختیاری اسکریپت‌های اضافه شده در صفحات مختلف -->
-    @await RenderSectionAsync("Scripts", required: false)
+    <!-- JS های پروژه -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- بارگذاری اسکریپت اصلی Leaflet (باید بعد از CSS آن بارگذاری شود) -->
+    <!-- JS اصلی Leaflet -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
 
-    <!-- توجه: این اسکریپت Leaflet تکراری حذف شده است (کامنت شده) -->
-    <!-- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script> حذف شده -->
+    <!-- JS پلاگین LocateControl (بعد از Leaflet) -->
+    <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
+
+    <!-- SignalR -->
+    <script src="~/js/dist/browser/signalr.js"></script>
+
+    <!-- اسکریپت‌های اختصاصی -->
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

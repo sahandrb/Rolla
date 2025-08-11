@@ -5,6 +5,11 @@
     {
       "library": "bootstrap@5.3.7",
       "destination": "wwwroot/lib/bootstrap/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "@microsoft/signalr@latest",
+      "destination": "wwwroot/js/"
     }
   ]
 }
