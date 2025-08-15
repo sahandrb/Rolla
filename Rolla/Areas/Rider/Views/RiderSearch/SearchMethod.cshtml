@@ -1,4 +1,6 @@
 ﻿@{
+    var Name = User.Claims.FirstOrDefault(c => c.Type == "Name")?.Value;
+    var RoutingCode = User.Claims.FirstOrDefault(c => c.Type == "RoutingRCode")?.Value;
     ViewData["Title"] = "SearchMethod";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -81,4 +83,8 @@
 <div id="loader">
     <div class="loader-text">در حال جست‌وجوی راننده مناسب برای شما هستیم</div>
    
+</div>
+<div>
+    <p>نام: @Name</p>
+    <p>کد مسیر: @RoutingCode</p>
 </div>

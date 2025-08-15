@@ -1,71 +1,563 @@
-﻿@{
-    // تعیین صفحه Layout کلی که این ویو از آن استفاده می‌کند
-    Layout = "~/Views/Shared/_Layout.cshtml"; 
-}
+﻿
 
-<!--
-    عنوان صفحه (اختیاری)
--->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rider Login - Modern Design</title>
 
-<!--
-    فرم دریافت اطلاعات Rider
-    - از تگ فرم Razor استفاده شده که به اکشن Index کنترلر RiderController در ناحیه Rider ارسال می‌کند
-    - متد ارسال POST است تا اطلاعات فرم به سرور ارسال شود
-    - استایل‌ها برای ظاهر زیبا و کاربرپسند: padding، گوشه‌های گرد، سایه، پس‌زمینه روشن
-    - حداکثر عرض فرم 500 پیکسل و وسط صفحه قرار گرفته است
--->
-<form asp-Action="Index" asp-Controller="RiderController" asp-area="Rider" method="post"  
-      class="p-4 rounded shadow-sm bg-light" style="max-width: 500px; margin: auto;">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!--
-        بخش ورودی برای نام Rider
-        - لیبل که به فیلد ورودی متصل است (با استفاده از id)
-        - فیلد متنی برای وارد کردن نام Rider
-        - کلاس‌های Bootstrap و custom برای ظاهر بهتر
-        - placeholder راهنمایی برای کاربر درون فیلد
-    -->
-    <div class="mb-3">
-        <label for="riderNameInput" name="Name" class="form-label">Rider Name</label>
-        <input type="text" name="Name" class="form-control custom-input" id="riderNameInput" placeholder="Enter rider name">
+    <style>
+        /* Modern CSS Variables */
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --background-gradient: linear-gradient(135deg, #a0c4ff 0%, #b3d9ff 100%);
+            --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --input-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background-gradient);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Main Container */
+        .main-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* Modern Form Card */
+        .modern-form-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+
+            }
+
+        /* Form Title */
+        .form-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1f2937;
+        }
+
+            .form-title h2 {
+                font-size: 1.875rem;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+                background: linear-gradient(135deg, var(--primary-color), dodgerblue);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .form-title p {
+                color: var(--secondary-color);
+                font-size: 0.95rem;
+                font-weight: 400;
+            }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 1.75rem;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            transform: translateY(0);
+            transition: var(--transition);
+        }
+
+        /* Modern Input Fields */
+        .modern-input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #1f2937;
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            transition: var(--transition);
+            font-family: inherit;
+            position: relative;
+        }
+
+            .modern-input:focus {
+                outline: none;
+                border-color: var(--primary-color);
+                box-shadow: var(--input-shadow);
+                transform: translateY(-1px);
+            }
+
+            .modern-input:hover:not(:focus) {
+                border-color: #d1d5db;
+            }
+
+        /* Input Icons */
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modern-input:focus + .input-icon {
+            color: var(--primary-color);
+        }
+
+        /* Submit Button */
+        .modern-submit-btn {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, var(--primary-color), dodgerblue);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+            .modern-submit-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 15px 35px rgba(79, 70, 229, 0.3);
+            }
+
+            .modern-submit-btn:active {
+                transform: translateY(0);
+            }
+
+            .modern-submit-btn::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                transition: left 0.5s;
+            }
+
+            .modern-submit-btn:hover::before {
+                left: 100%;
+            }
+
+        /* Home Button Container */
+        .home-button-container {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .modern-home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: dodgerblue;
+            background: #white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            backdrop-filter: blur(10px);
+        }
+
+            .modern-home-btn:hover {
+                background: rgba(0, 0, 0, 0.9);
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                color: white;
+            }
+
+        /* Loading State */
+        .loading {
+            position: relative;
+            color: transparent;
+        }
+
+            .loading::after {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                width: 20px;
+                height: 20px;
+                margin: -10px 0 0 -10px;
+                border: 2px solid transparent;
+                border-top: 2px solid #ffffff;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+        @@keyframes spin {
+            to
+
+        {
+            transform: rotate(360deg);
+        }
+
+        }
+
+        /* Floating Animation */
+        @@keyframes float {
+            0%, 100%
+
+        {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(0px);
+        }
+
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .modern-form-card
+
+        {
+            padding: 2rem 1.5rem;
+            margin: 1rem;
+        }
+
+        .form-title h2 {
+            font-size: 1.5rem;
+        }
+
+        body {
+            padding: 10px;
+        }
+
+        }
+
+        @@media (max-width: 480px) {
+            .modern-form-card
+
+        {
+            padding: 1.5rem 1rem;
+        }
+
+        .modern-input {
+            padding: 0.875rem 1rem;
+        }
+
+        .modern-submit-btn {
+            padding: 0.875rem 1.25rem;
+        }
+
+        }
+
+        /* Success Animation */
+        @@keyframes success {
+            0%
+
+        {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+
+        }
+
+        .success-animation {
+            animation: success 0.3s ease-in-out;
+        }
+
+        /* Error Styles */
+        .error {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <!-- Modern Form Card -->
+        <div class="modern-form-card floating">
+            <div class="form-title">
+                <h2>Welcome Back</h2>
+                <p>Please enter your rider information to continue</p>
+            </div>
+
+            <form asp-Action="Index" asp-Controller="RiderController" asp-area="Rider" method="post" id="riderForm">
+                <!-- Rider Name Input -->
+                <div class="form-group">
+                    <label for="riderNameInput" class="form-label">
+                        <i class="bi bi-person-fill me-2"></i>Rider Name
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="text"
+                               name="Name"
+                               class="modern-input"
+                               id="riderNameInput"
+                               placeholder="Enter your full name"
+                               required>
+                        <i class="bi bi-person input-icon"></i>
+                    </div>
+                    <div class="error-message" id="nameError">Please enter a valid name</div>
+                </div>
+
+                <!-- Rider Type Input -->
+                <div class="form-group">
+                    <label for="riderTypeInput" class="form-label">
+                        <i class="bi bi-tag-fill me-2"></i>Rider Type
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="number"
+                               name="RiderType"
+                               class="modern-input"
+                               id="riderTypeInput"
+                               placeholder="Enter rider type (1-5)"
+                               min="1"
+                               max="5"
+                               required>
+                        <i class="bi input-icon"></i>
+                    </div>
+                    <div class="error-message" id="typeError">Please enter a valid rider type (1-5)</div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="modern-submit-btn" id="submitBtn">
+                    <i class="bi bi-arrow-right-circle"></i>
+                    <span>Continue</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Home Button -->
+        <div class="home-button-container">
+            <button type="button"
+                    class="modern-home-btn"
+                    onclick="location.href='@Url.Action("Index", "Home", new { area = "" })'">
+                <i class="bi bi-house-door-fill"></i>
+                <span>Go to Home</span>
+            </button>
+        </div>
     </div>
 
-    <!--
-        بخش ورودی برای نوع Rider
-        - لیبل برای فیلد نوع Rider
-        - فیلد عددی (number) برای وارد کردن نوع Rider
-        - کلاس‌ها برای استایل Bootstrap و سفارشی
-        - placeholder برای راهنمایی کاربر
-    -->
-    <div class="mb-3">
-        <label for="riderTypeInput" name="RiderType" class="form-label">Rider Type</label>
-        <input type="number" name="RiderType" class="form-control custom-input" id="riderTypeInput" placeholder="Enter rider type">
-    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!--
-        دکمه ارسال فرم
-        - دکمه از نوع submit که هنگام کلیک فرم را ارسال می‌کند
-        - کلاس‌های Bootstrap برای ظاهر دکمه با استایل حاشیه‌ای تیره و عرض کامل
-    -->
-    <button type="submit" class="btn btn-outline-dark w-100">Submit</button>
-</form>
+    <script>
+        // Modern JavaScript for Enhanced UX
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('riderForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const nameInput = document.getElementById('riderNameInput');
+            const typeInput = document.getElementById('riderTypeInput');
+            const nameError = document.getElementById('nameError');
+            const typeError = document.getElementById('typeError');
 
-<!--
-    ظرف والد برای دکمه ناوبری به صفحه اصلی سایت
-    - کلاس‌های parent و div8 برای چینش با CSS Grid یا Flexbox (بسته به تعریف CSS)
--->
-<div class="parent">
-    <div class="div8">
-        <!--
-            دکمه‌ای برای بازگشت به صفحه Home
-            - با کلیک روی دکمه، به آدرس اکشن Index کنترلر Home (بدون ناحیه) هدایت می‌شود
-            - استایل‌ها برای ظاهر دکمه، گرد کردن گوشه‌ها، فاصله داخلی، سایه و چینش داخلی
-            - آیکون خانه از Bootstrap Icons قبل از متن نمایش داده شده است
-        -->
-        <button type="button"
-                class="btn btn-dark rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
-                onclick="location.href='@Url.Action("Index", "Home", new { area = "" })'">
-            <i class="bi bi-house-door-fill"></i>
-            Go to Home
-        </button>
-    </div>
-</div>
+            // Real-time validation
+            nameInput.addEventListener('input', function() {
+                validateName();
+            });
+
+            typeInput.addEventListener('input', function() {
+                validateType();
+            });
+
+            // Name validation
+            function validateName() {
+                const name = nameInput.value.trim();
+                if (name.length < 2) {
+                    nameInput.classList.add('error');
+                    nameError.style.display = 'block';
+                    nameError.textContent = 'Name must be at least 2 characters long';
+                    return false;
+                } else if (!/^[a-zA-Z\\s]+$/.test(name)) {
+                    nameInput.classList.add('error');
+                    nameError.style.display = 'block';
+                    nameError.textContent = 'Name should only contain letters and spaces';
+                    return false;
+                } else {
+                    nameInput.classList.remove('error');
+                    nameError.style.display = 'none';
+                    return true;
+                }
+            }
+
+            // Type validation
+            function validateType() {
+                const type = parseInt(typeInput.value);
+                if (isNaN(type) || type < 1 || type > 5) {
+                    typeInput.classList.add('error');
+                    typeError.style.display = 'block';
+                    typeError.textContent = 'Please enter a number between 1 and 5';
+                    return false;
+                } else {
+                    typeInput.classList.remove('error');
+                    typeError.style.display = 'none';
+                    return true;
+                }
+            }
+
+            // Form submission with loading state
+            form.addEventListener('submit', function(e) {
+                const isNameValid = validateName();
+                const isTypeValid = validateType();
+
+                if (!isNameValid || !isTypeValid) {
+                    e.preventDefault();
+
+                    // Shake animation for invalid inputs
+                    if (!isNameValid) {
+                        nameInput.style.animation = 'shake 0.5s ease-in-out';
+                        setTimeout(() => nameInput.style.animation = '', 500);
+                    }
+                    if (!isTypeValid) {
+                        typeInput.style.animation = 'shake 0.5s ease-in-out';
+                        setTimeout(() => typeInput.style.animation = '', 500);
+                    }
+                    return;
+                }
+
+                // Add loading state
+                submitBtn.classList.add('loading');
+                submitBtn.disabled = true;
+
+                // Add success animation to form
+                document.querySelector('.modern-form-card').classList.add('success-animation');
+            });
+
+            // Input focus effects
+            const inputs = document.querySelectorAll('.modern-input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.parentElement.querySelector('.form-label').style.color = 'var(--primary-color)';
+                });
+
+                input.addEventListener('blur', function() {
+                    this.parentElement.parentElement.querySelector('.form-label').style.color = '#374151';
+                });
+            });
+
+            // Add floating labels effect
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    if (this.value.length > 0) {
+                        this.classList.add('has-value');
+                    } else {
+                        this.classList.remove('has-value');
+                    }
+                });
+            });
+
+            // Add smooth scroll for mobile
+            if (window.innerWidth <= 768) {
+                nameInput.addEventListener('focus', function() {
+                    setTimeout(() => {
+                        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                });
+
+                typeInput.addEventListener('focus', function() {
+                    setTimeout(() => {
+                        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                });
+            }
+        });
+
+        // Add shake animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+        @@keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') {
+                const inputs = Array.from(document.querySelectorAll('.modern-input'));
+                const currentIndex = inputs.indexOf(e.target);
+                if (currentIndex < inputs.length - 1) {
+                    e.preventDefault();
+                    inputs[currentIndex + 1].focus();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

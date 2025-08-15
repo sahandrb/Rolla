@@ -3,6 +3,7 @@ using Rolla.Data;
 using Microsoft.EntityFrameworkCore;
 using Rolla.BackGroundServices;
 using Rolla.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 
 
@@ -21,7 +22,13 @@ builder.Services.AddHostedService<RouteCleanerService>();  //سرویس غیر �
 builder.Services.AddScoped<IDRouteServices, DRouteServices>();
 builder.Services.AddScoped<IRRouteServices, RRouteServices>();
 builder.Services.AddScoped<IGeoJsonService, GeoJsonService>();
-
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login"; // مسیر ریدایرکت در صورت عدم احراز هویت
+        options.ExpireTimeSpan = TimeSpan.FromHours(7);
+        options.SlidingExpiration = true;
+    });
 
 
 
@@ -37,6 +44,7 @@ if (!app.Environment.IsDevelopment())
 app.UseRouting();
 
 app.UseSession();
+app.UseAuthentication(); // این خط اجباری است
 
 app.UseAuthorization();
 

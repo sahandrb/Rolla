@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rolla.Models;
 using Rolla.Data;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Rolla.Areas.Rider.Controllers
 {
@@ -29,7 +32,7 @@ namespace Rolla.Areas.Rider.Controllers
         // پس از ذخیره موفق، کاربر به صفحه دیگری هدایت می‌شود که نقشه یا وضعیت سفر را نمایش می‌دهد
         // در صورت وجود خطا در اعتبارسنجی، مجدداً همان فرم به همراه پیام خطا به کاربر نمایش داده می‌شود
         [HttpPost]
-        public IActionResult Index(Rolla.Models.Rider model)
+        public async Task<IActionResult> Index(Rolla.Models.Rider model)
         {
             if (ModelState.IsValid) // بررسی صحت داده‌های ورودی فرم
             {
@@ -47,7 +50,21 @@ namespace Rolla.Areas.Rider.Controllers
                 };
                 var RiderDto = System.Text.Json.JsonSerializer.Serialize(Dto); // سریالیزه کردن داده‌ها به فرمت JSON
                 HttpContext.Session.SetString("RiderDto", RiderDto); // ذخیره داده‌های مسافر در سشن برای دسترسی در آینده
-              
+
+                var Claims = new List<Claim>
+                {
+                    new Claim("Name" , model.name),
+                    new Claim("RoutingRCode", model.RoutingRCode.ToString())
+                };
+                var Identity = new ClaimsIdentity(Claims, CookieAuthenticationDefaults.AuthenticationScheme); // ایجاد یک شیء ClaimsIdentity برای مدیریت هویت کاربر
+                var Principal = new ClaimsPrincipal(Identity); // ایجاد یک شیء ClaimsPrincipal برای مدیریت هویت کاربر
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme, // استفاده از کوکی برای احراز هویت
+                    Principal, // شیء ClaimsPrincipal که شامل اطلاعات کاربر است
+                    new AuthenticationProperties { IsPersistent = true , ExpiresUtc=DateTimeOffset.UtcNow.AddHours(7) } // تنظیم ویژگی‌های احراز هویت
+                );
+
+
 
                 // انتقال کاربر به صفحه نمایش نقشه یا وضعیت سفر در صورت موفقیت ذخیره سازی
                 return RedirectToAction("RMapView", "RiderHome", new { area = "Rider" });
