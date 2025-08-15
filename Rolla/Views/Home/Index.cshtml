@@ -1,64 +1,310 @@
 ﻿@{
-    ViewData["Title"] = "Home Page"; // Sets the page title in ViewData for use in layout or elsewhere
+    ViewData["Title"] = "Home Page";
 }
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* -------------------- Global Styles -------------------- */
+        :root {
+            --primary-color: #6C63FF;
+            --secondary-color: #FF6584;
+            --bg-gradient: linear-gradient(135deg, #6C63FF, #FF6584);
+            --font-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --transition-speed: 0.4s;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-sans);
+            background: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        h1, h3 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .parent {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* -------------------- Hero Section -------------------- */
+        .hero {
+            width: 100%;
+            background: var(--bg-gradient);
+            color: #fff;
+            text-align: center;
+            padding: 120px 20px 80px 20px;
+            position: relative;
+            z-index: 1;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+        }
+
+            .hero h1 {
+                font-size: 3rem;
+                font-weight: 700;
+                letter-spacing: 1px;
+                margin-bottom: 20px;
+            }
+
+            .hero h3 span {
+                color: #fff;
+                font-weight: 600;
+                display: block;
+                margin-top: 10px;
+            }
+
+        /* -------------------- Buttons Section -------------------- */
+        .panel-buttons {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: -60px;
+            z-index: 2;
+            position: relative;
+        }
+
+            .panel-buttons button {
+                background: #fff;
+                border: none;
+                border-radius: 50px;
+                padding: 20px 40px;
+                font-size: 1.2rem;
+                font-weight: 500;
+                color: #333;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                transition: all var(--transition-speed) ease;
+            }
+
+                .panel-buttons button i {
+                    font-size: 1.4rem;
+                }
+
+                .panel-buttons button:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+                }
+
+        /* -------------------- Feature Cards -------------------- */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 100px auto 60px auto;
+        }
+
+        .feature-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+        }
+
+            .feature-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            }
+
+            .feature-card i {
+                font-size: 2.5rem;
+                color: var(--primary-color);
+                margin-bottom: 20px;
+            }
+
+            .feature-card h4 {
+                font-size: 1.4rem;
+                margin-bottom: 10px;
+                font-weight: 600;
+            }
+
+            .feature-card p {
+                font-size: 1rem;
+                color: #666;
+            }
+
+        /* -------------------- Floating Circles -------------------- */
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.2;
+            z-index: 0;
+            animation: float 12s infinite linear;
+        }
+
+        .circle1 {
+            width: 200px;
+            height: 200px;
+            background: var(--primary-color);
+            top: 10%;
+            left: -50px;
+        }
+
+        .circle2 {
+            width: 300px;
+            height: 300px;
+            background: var(--secondary-color);
+            top: 60%;
+            right: -150px;
+        }
+
+        .circle3 {
+            width: 150px;
+            height: 150px;
+            background: #FFC107;
+            bottom: 20%;
+            left: -70px;
+        }
+
+        @@keyframes float {
+            0%
+
+        {
+            transform: translateY(0) translateX(0) rotate(0deg);
+        }
+
+        50% {
+            transform: translateY(-50px) translateX(50px) rotate(180deg);
+        }
+
+        100% {
+            transform: translateY(0) translateX(0) rotate(360deg);
+        }
+
+        }
+
+        /* -------------------- Footer -------------------- */
 
 
+            footer h4 {
+                margin-bottom: 15px;
+            }
 
-<div class="parent">
-    <!-- Container div using grid or flex layout (defined elsewhere) -->
+            footer p {
+                font-size: 0.9rem;
+                opacity: 0.7;
+            }
 
-    <div class="div3">
-        <h1 class="display-4">Welcome</h1> <!-- Large heading welcoming the user -->
+        /* -------------------- Responsive -------------------- */
+        @@media(max - width: 768px)
+
+        {
+            .hero h1
+
+        {
+            font-size: 2.2rem;
+        }
+
+        .panel-buttons {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background Circles -->
+    <div class="floating-circle circle1"></div>
+    <div class="floating-circle circle2"></div>
+    <div class="floating-circle circle3"></div>
+
+    <!-- Hero Section -->
+    <div class="parent">
+        <section class="hero">
+            <h1>Welcome</h1>
+            <h3 class="transport-tagline">
+                Roll fast. Ride smart. <span>Powered by Rolla</span>
+            </h3>
+        </section>
+
+        <!-- Buttons Section -->
+        <div class="panel-buttons">
+            <button type="button"
+                    onclick="location.href='@Url.Action("Index", "DriverHome", new { area = "Driver" })'">
+                <i class="bi bi-car-front-fill"></i>
+                Driver Panel
+            </button>
+
+            <button type="button"
+                    onclick="location.href='@Url.Action("Index", "RiderHome", new { area = "Rider" })'">
+                <i class="bi bi-house-door-fill"></i>
+                Rider Panel
+            </button>
+        </div>
+
+        <!-- Features Section -->
+        <div class="features">
+            <div class="feature-card">
+                <i class="bi bi-speedometer2"></i>
+                <h4>Fast Rides</h4>
+                <p>Get to your destination quickly and efficiently, always on time.</p>
+            </div>
+            <div class="feature-card">
+                <i class="bi bi-shield-lock-fill"></i>
+                <h4>Secure Payments</h4>
+                <p>All transactions are encrypted and safe for worry-free rides.</p>
+            </div>
+            <div class="feature-card">
+                <i class="bi bi-person-lines-fill"></i>
+                <h4>Driver Profiles</h4>
+                <p>Know who is driving you. Transparent ratings for peace of mind.</p>
+            </div>
+            <div class="feature-card">
+                <i class="bi bi-globe2"></i>
+                <h4>Global Coverage</h4>
+                <p>Available in multiple cities, ensuring connectivity wherever you go.</p>
+            </div>
+            <div class="feature-card">
+                <i class="bi bi-clock-fill"></i>
+                <h4>24/7 Support</h4>
+                <p>Our support team is always ready to help you with any issues.</p>
+            </div>
+            <div class="feature-card">
+                <i class="bi bi-stars"></i>
+                <h4>Top Rated</h4>
+                <p>Our riders and drivers consistently enjoy high-quality service.</p>
+            </div>
+        </div>
     </div>
 
-    <div class="div7">
-        <!-- Button to navigate to the Driver panel in the Driver area -->
-        <button type="button"
-                class="btn btn-outline-dark rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
-                onclick="location.href='@Url.Action("Index", "DriverHome", new { area = "Driver" })'">
-            Driver Panel
-        </button>
-    </div>
+    <!-- Footer -->
+ 
 
-    <div class="div9">
-        <!-- Button to navigate to the Rider panel in the Rider area -->
-        <button type="button"
-                class="btn btn-outline-dark rounded-pill px-4 py-2 shadow d-flex align-items-center gap-2 transition"
-                onclick="location.href='@Url.Action("Index", "RiderHome", new { area = "Rider" })'">
-            <i class="bi bi-house-door-fill"></i> <!-- Icon of a house before text -->
-            Rider Panel
-        </button>
-    </div>
-    <div class="div18">
-        <h3 class="transport-tagline">
-            Roll fast. Ride smart. <span>Powered by Rolla</span>
-        </h3>
-
-</div>
-
-@*<style>
-    .tagline-container {
-        display: flex;
-        
-        align-items: center;
-        height: 100vh; /* کل ارتفاع صفحه */
-        justify-content: flex-start;
-        
-    }
-
-    .transport-tagline {
-        font-family: 'Urbanist', sans-serif;
-        font-weight: 600;
-        font-size: clamp(1.8rem, 5vw, 2.8rem);
-        color: #1a1a1a;
-        text-align: center;
-        padding: 20px 30px;
-        line-height: 1.4;
-        letter-spacing: 0.5px;
-        background-color: ;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-</style>
-*@
+    <!-- Optional JS for minor interactions -->
+    <script>
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.background = 'linear-gradient(135deg, #6C63FF, #FF6584)';
+                card.style.color = '#fff';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.background = '#fff';
+                card.style.color = '#333';
+            });
+        });
+    </script>
+</body>
+</html>
