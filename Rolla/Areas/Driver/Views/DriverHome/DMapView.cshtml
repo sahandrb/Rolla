@@ -206,19 +206,7 @@
 
         let currentZoom = map.getZoom();
 
-        fetch('/Route/GetMarkers')
-          .then(response => response.json())
-          .then(data => {
-            L.geoJSON(data, {
-              pointToLayer: function (feature, latlng) {
-                let marker = L.marker(latlng, {
-                  icon: getIcon(currentZoom)
-                });
-                markers.push(marker);
-                return marker;
-              }
-            }).addTo(map);
-          });
+
 
         map.on('zoomend', () => {
           let zoom = map.getZoom();
